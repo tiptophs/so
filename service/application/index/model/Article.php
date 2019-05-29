@@ -1,0 +1,38 @@
+<?php
+
+namespace app\index\model;
+use think\Model;
+use think\facade\Session;
+
+class Article extends Model{
+
+    protected $pk = 'sid';               //默认主键
+    protected $table = 'so_article';        //默认数据表
+
+    protected $autoWriteTimestamp = 'datetime'; //开启自动时间戳，并且设置为datetime格式
+
+    protected $createTime = 'create_time';  //创建时间字段
+    protected $updateTime = 'update_time';  //更新时间字段
+    protected $dateFormat = 'Y-m-d H:i:s';  //时间字段取出后的默认时间格式
+
+
+    //设置图片地址
+    public function getBackAttr($value){
+        $back = 'http://192.168.127.128/so/service/public/upload/user/'.Session::get('user')['uid'].'/article/'.$value;
+        return $back;
+    }
+
+
+    //设置存储标签格式
+    public function setTagAttr($tags){
+        if($tags=='') return '';
+        $tagStr = '';
+        $tags = json_decode($tags, true);
+        if(!empty($tags)){
+            foreach ($tags as $key=>$tag){
+                $tagStr = $tagStr==''? '['.$tag['title'].']':$tagStr.','.'['.$tag['title'].']';
+            }
+        }
+        return $tagStr;
+    }
+}

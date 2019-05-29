@@ -1,0 +1,19 @@
+.DS_Store
+/web/blog/node_modules/
+/web/blog/dist/
+/web/blog/npm-debug.log*
+/web/blog/yarn-debug.log*
+/web/blog/yarn-error.log*
+/web/blog/test/unit/coverage/
+/web/blog/test/e2e/reports/
+/web/blog/selenium-debug.log
+
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.mp4
