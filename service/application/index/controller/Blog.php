@@ -219,5 +219,12 @@ class Blog extends Th {
     }
 
 
+    //+------------------------------- 
+    //|         测试函数部分
+    //+-------------------------------
+
+    public function test(){
+        echo 'this controller is ok';
+    }
 
 }

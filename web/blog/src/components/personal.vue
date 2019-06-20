@@ -44,7 +44,7 @@
                             <div class="personal-operations">
                                 <div class="list-group">
                                     <router-link to="/personal" tag="a" href="javascript:;" class="list-group-item" style="border-radius: 0px;">首页</router-link>
-                                    <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">写笔记</router-link>
+                                    <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">创建笔记</router-link>
                                     <a href="#" class="list-group-item">笔记查询</a>
                                     <a href="#" class="list-group-item">页面控制</a>
                                     <a href="#" class="list-group-item" style="border-bottom:1px solid #ccc;">分类管理</a>
