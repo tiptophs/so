@@ -11,6 +11,8 @@ import login from '@/components/login'
 import personal from '@/components/personal'
 import particle from '@/components/particle'
 import message from '@/components/message'
+import skill from '@/components/skill'
+import mark from '@/components/mark'
 
 export default new Router({
     routes: [
@@ -22,7 +24,9 @@ export default new Router({
         {path: '/login', name: 'login', component: login},
         {path: '/personal', name: 'personal', component: personal},
         {path: '/personal/particle', name: 'particle', component: particle},
-        {path: '/message', name: 'message', component: message}
+        {path: '/message', name: 'message', component: message},
+        {path: '/skill', mark: 'skill', component: skill},
+        {path: '/mark', mark: 'mark', component: mark}
     ],
     linkActiveClass: 'active'
 })

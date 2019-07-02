@@ -44,6 +44,11 @@ Vue.use(Highlight);
 import ckeditor from './components/plugins/ckeditor/index.js'
 Vue.use( ckeditor);
 
+//引入markdown组件
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

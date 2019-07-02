@@ -43,8 +43,9 @@
                             </div>
                             <div class="personal-operations">
                                 <div class="list-group">
-                                    <router-link to="/personal" tag="a" href="javascript:;" class="list-group-item" style="border-radius: 0px;">首页</router-link>
-                                    <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">创建笔记</router-link>
+                                    <router-link to="/personal" tag="a" href="javascript:;" class="list-group-item" style="border-radius: 0px;">我的首页</router-link>
+                                    <router-link to="/mark" tag="a" href="javascript:;" class="list-group-item">Markdown备课</router-link>
+                                    <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">琐碎笔记</router-link>
                                     <a href="#" class="list-group-item">笔记查询</a>
                                     <a href="#" class="list-group-item">页面控制</a>
                                     <a href="#" class="list-group-item" style="border-bottom:1px solid #ccc;">分类管理</a>
@@ -88,7 +89,7 @@
                             </div>
                             <div class="articles-content">
                                 <template v-for="(item, index) in articles">
-                                    <div class="article-item" :id="index">
+                                    <div class="article-item" :key="index">
                                         <h3><router-link :to="{ name:'message', query:{ sid:item.sid } }" href="javascript:;">{{ item.title }}</router-link></h3>
                                         <p>{{ item.desc }}</p>
                                         <div class="bot">
@@ -114,7 +115,7 @@
                                 <li><a href="javascript:;" aria-label="Previous"><span aria-hidden="true"> << </span></a></li>
 
                                 <template v-for="(item, index) in pageLine">
-                                    <li :id="index"><a :class="{ active: item.isActive }" @click="getArticles( item.page )" href="javascript:;"><span aria-hidden="true">{{ item.page }}</span></a></li>
+                                    <li :key="index"><a :class="{ active: item.isActive }" @click="getArticles( item.page )" href="javascript:;"><span aria-hidden="true">{{ item.page }}</span></a></li>
                                 </template>
 
                                 <li><a href="javascript:;" aria-label="Next"><span aria-hidden="true"> >> </span></a></li>

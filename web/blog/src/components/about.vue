@@ -101,7 +101,7 @@
                                         <h4 style="line-height:1.5;height:66px;">{{ item.title }}</h4>
                                         <p style="height:64px;overflow:hidden;">{{ item.desc }}</p>
                                         <div class="agileits-button two">
-                                            <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button" style="margin-top:0px;">了解更多</a>
+                                            <router-link tag="a" class="btn btn-primary btn-lg hvr-underline-from-left" :to="{ name:'skill', query:{ sid:item.sid } }" role="button" style="margin-top:0px;">了解更多</router-link>
                                         </div>
                                     </div>
                                     <div class="clearfix"> </div>
