@@ -18,7 +18,7 @@ class Article extends Model{
 
     //设置图片地址
     public function getBackAttr($value){
-        $back = 'http://192.168.127.128/so/service/public/upload/user/'.Session::get('user')['uid'].'/article/'.$value;
+        $back = 'http://192.168.1.99/so/service/public/upload/user/'.Session::get('user')['uid'].'/article/'.$value;
         return $back;
     }
 

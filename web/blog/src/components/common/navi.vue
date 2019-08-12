@@ -23,9 +23,9 @@
                                 <router-link to="/home" tag="li">
                                     <a href="javascript:;" class="hvr-ripple-in"> 首页</a>
                                 </router-link>
-                                <router-link to="/blog" tag="li">
+                                <!--<router-link to="/blog" tag="li">
                                     <a href="javascript:;" class="hvr-ripple-in">日记本</a>
-                                </router-link>
+                                </router-link>-->
                                 <router-link to="/about" tag="li">
                                     <a href="javascript:;" class="hvr-ripple-in">关于我</a>
                                 </router-link>
@@ -40,9 +40,9 @@
                                         <li><a href="typography.html">Typography</a></li>
                                     </ul>
                                 </li>--->
-                                <router-link to="/contact" tag="li">
+                                <!--<router-link to="/contact" tag="li">
                                     <a href="javascript:;" class="hvr-ripple-in">留言</a>
-                                </router-link>
+                                </router-link>-->
                                 <li v-if="showLogin">
                                     <router-link to="/login" class="login-button">登录</router-link>
                                 </li>
