@@ -81,9 +81,9 @@
         <div class="banner-bottom service_agile">
             <div class="container">
 
-                <div class="wthree_head_section">
+                <!--<div class="wthree_head_section">
                     <h3 class="w3l_header"> ( ˘•灬•˘ )<span>我的技术储备</span></h3>
-                </div>
+                </div>-->
 
                 <div class="agile_wthree_inner_grids row">
                     <!-- 循环我的技能数据 -->

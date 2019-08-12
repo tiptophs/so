@@ -16,6 +16,11 @@
         <div class="wrapper">
             <div class="container">
                 <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-default" style="margin-bottom:15px;" @click="switchEditor"> 切换编辑模式 </button>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="article-base">
                             <div class="form-group article-title">
@@ -29,17 +34,26 @@
                             </div>
 
                             <div class="article-background">
-                                <label class="form-label" for="desc">预览图</label>
+                                <label class="form-label" for="desc">预览图</label> 
                                 <v-upload></v-upload>
                             </div>
                             <div class="article-config" style="margin-top:40px;">
-                                <label class="form-label">配置</label><hr/>
+                                <label class="form-label">配置</label><hr style="margin-top:0px;"/>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="form-group" v-if="isCk">
                                         <label class="col-sm-4 control-label" style="line-height: 34px;">分类</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" v-model="articles.category">
                                                 <option v-for="(cate, index) in category" :value="cate.id" :key="index">{{ cate.title }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" v-if="!isCk">
+                                        <label class="col-sm-4 control-label" style="line-height: 34px;">分类</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" v-model="articles.category">
+                                                <option v-for="skill in skills" :key="skill.sid" :value="skill.sid">{{ skill.title }}</option>
                                             </select>
                                         </div>
                                     </div><br/>
@@ -77,9 +91,10 @@
                     </div>
 
                     <div class="col-md-9">
-                        <v-ckeditor ref="ck"></v-ckeditor>
-                        <!--<textarea id="editor" name="editor" >请输入...</textarea>-->
-                        <!--<ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>-->
+                        <v-ckeditor ref="ck" v-if="isCk"></v-ckeditor>
+                        <div class="mark-mavon" v-if="!isCk">
+                            <mavon-editor :ishljs = "false" v-model="articles.content"></mavon-editor>     
+                        </div>
                     </div>
                 </div>
 
@@ -102,21 +117,11 @@
 
 <script>
 
-    //引入ckEditor
-    //import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-    //import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn'
-
     //引入自定义组件
     import upload_img from './plugins/shupload/upload.vue';
     export default {
         data() {
             return {
-                // editor: ClassicEditor,
-                // editorData: '<p>请在此输入文章内容...</p>',
-                // editorConfig: {
-                //     // The configuration of the editor.
-                //     language: 'zh-cn'
-                // },
                 articles: {             //文章对象
                     title: '',
                     desc: '',
@@ -124,7 +129,8 @@
                     type:1,
                     category:1,
                     tag: [],
-                    content: ''
+                    content: '',
+                    editor:1
                 },
                 tags: [
                     { id: 1, title: '后端', },
@@ -156,13 +162,17 @@
                     { id:15, title:'前端模版/Bootstrap/Ant/ECharts...' },
                     { id:16, title:'其他综合' },
                     { id:16, title:'日常生活' }
-                ]
+                ],
+                skills:[],
+                isCk: true              //默认编辑模式为ckeditor
+                
             };
         },
         components: {
             'v-upload' : upload_img
         },
         methods: {
+            //添加标签
             addTag: function(){
                 if(this.tagName.trim()=='') return false;
                 this.tags.push({
@@ -184,10 +194,15 @@
                 })
             },
             saveArticle: function () {
+
                 this.articles.tag = JSON.stringify(this.tags);
+                
                 let upfiles = document.getElementById('ass-upload').files['0'];
                 this.articles.back = typeof upfiles == 'undefined'? '':upfiles;
-                this.articles.content = this.$refs.ck.getValue();
+
+                if(this.isCk){
+                    this.articles.content = this.$refs.ck.getValue();
+                }
 
                 if(this.articles.content.trim()=='' || this.articles.desc.trim()=='' || this.articles.title.trim()==''){
                     this.showDialog = true;
@@ -291,10 +306,32 @@
                         this.showDialog = false;
                     })
                 });
+            },
+            switchEditor: function(){
+                this.isCk = !(this.isCk);
+                this.articles.editor = this.isCk==true? 1:2
+            },
+            //获取我的相关技能，并且展示
+            gitskills:function(){                   
+                let url = '/api/index/tool/getSkills';        // 这里就是刚才的config/index.js中的/api
+                this.$axios({
+                    method: "post",
+                    url: url,
+                    param:{},
+                    data: {},
+                    transformRequest: [data=> {
+                        return this.qs.stringify(data);
+                    }]
+                }).then(res => {
+                    if(res.data.status){
+                        this.skills = res.data.result;
+                    }
+                }).catch(function(err) {})
             }
         },
         mounted() {
             this.initArticle();
+            this.gitskills();
         }
     }
 </script>
@@ -356,8 +393,9 @@
     }
 </style>
 <style>
-    .ck-content {
-        min-height: 805px !important;
+
+    .markdown-body {
+        min-height: 825px !important;   
     }
 
 </style>

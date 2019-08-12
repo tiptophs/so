@@ -44,7 +44,6 @@
                             <div class="personal-operations">
                                 <div class="list-group">
                                     <router-link to="/personal" tag="a" href="javascript:;" class="list-group-item" style="border-radius: 0px;">我的首页</router-link>
-                                    <router-link to="/mark" tag="a" href="javascript:;" class="list-group-item">Markdown备课</router-link>
                                     <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">琐碎笔记</router-link>
                                     <a href="#" class="list-group-item">笔记查询</a>
                                     <a href="#" class="list-group-item">页面控制</a>

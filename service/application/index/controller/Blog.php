@@ -204,6 +204,39 @@ class Blog extends Th {
         return $ret;
     }
 
+   /**
+     * 文章数据填写验证
+     * @param $data
+     * @return array
+     */
+    protected function checkMarkSave(){
+        //设置返回数组
+        $ret = array('status'=>true);
+
+        //定义验证字段
+        $rule = [
+            'title|标题'=>[
+                'require' => 'require',
+                'max'     => '60'
+            ],
+            'category|分类'=>[
+                'require' => 'require'
+            ],
+            'content|正文'=>[
+                'require' => 'require'
+            ]
+        ];
+
+        //初始化验证过则
+        Validate::rule($rule);
+        //验证数据
+        if(!Validate::check($data)){
+            $ret['message'] = Validate::getError();
+            $ret['status'] = false;
+        }
+        return $ret;
+    }
+
 
     //+------------------------------
     //|         工具函数部分
