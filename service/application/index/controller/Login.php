@@ -55,6 +55,8 @@ class Login extends Th{
             $data['uid'] = $this->getUserNumber();      //自动生成用户编号
             if($check['status']){                       //添加数据
                 unset($data['password_confirm']);
+                dump($data);die;
+                
                 $user = User::create($data, true);
                 if($user){
                     //存储用户信息到session

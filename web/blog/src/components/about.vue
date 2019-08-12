@@ -12,7 +12,7 @@
                 </ul>
             </div>
         </div>
-        <!--标语-->
+        <!--标语
         <div class="banner-bottom">
             <div class="banner_bottom_w3ls_info">
                 <div class="wthree_head_section">
@@ -32,8 +32,8 @@
                     <a class="btn btn-primary btn-lg hvr-underline-from-left" href="javascript:;" role="button">本前台采用Vue.js框架 →_→！</a>
                 </div>
             </div>
-        </div>
-        <!--关于我介绍-->
+        </div>-->
+        <!--关于我介绍
         <div class="about" id="welcome">
             <div class="container">
                 <div class="wthree_head_section">
@@ -75,7 +75,7 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <!--我的技能-->
         <div class="banner-bottom service_agile">
