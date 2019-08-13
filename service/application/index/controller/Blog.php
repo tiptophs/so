@@ -9,28 +9,11 @@ use think\facade\Validate;
 use app\index\model\Article;
 use think\facade\Session;
 use think\facade\Env;
+use think\facade\Config;
 
 class Blog extends Th {
 
-    public $base_upload_path = '';
-    public $article_upload_path = '';
-
-    /**
-     * 构造函数
-     */
-    public function __construct(App $app = null)
-    {
-        parent::__construct($app);
-    }
-
-    /**
-     *初始化
-     */
-    public function initialize(){
-        $this->base_upload_path = Env::get('root_path').'public/upload/user';
-        $this->article_upload_path = $this->base_upload_path.'/'.Session::get('user')['uid'].'/article/'.$this->getFileNameByTime();
-    }
-
+    
     //+---------------------------------------
     //|    文章创建、编辑、删除、查询等操作部分
     //+---------------------------------------
@@ -48,7 +31,8 @@ class Blog extends Th {
             //文件上传
             if(!is_null($file)){
                 // 移动到框架应用根目录/public/uploads/user 目录下
-                $info = $file->rule('uniqid')->move($this->article_upload_path);
+                $upload_path = Config::get('custom.file_upload_path').'/'. $data['uid'].'/'.$this->getFileNameByTime();
+                $info = $file->rule('uniqid')->move($upload_path);
                 $data['back'] = $this->getFileNameByTime().'/'.$info->getSaveName();
                 //修改尺寸
                 //resize_image($info->getSaveName(), $this->article_upload_path.'/'.$info->getSaveName(), 1611, 946);
@@ -95,7 +79,7 @@ class Blog extends Th {
         $sid = Request::param('sid');
         
         $article = Article::get($sid);
-        $path = $article['back'];
+        $path = Config::get('custom.file_upload_path').'/'. $sid.'/'.$article['back'];
         if($article->delete()){
             $this->unlinkPathFile($path);
             return json($ret);

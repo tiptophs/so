@@ -2,6 +2,8 @@
 namespace app\index\controller;
 
 use think\Controller;
+use think\facade\Config;
+
 class Index extends Controller
 {
     public function index()
@@ -16,7 +18,7 @@ class Index extends Controller
 
 
     public function test(){
-        return '1111';
+        Config::get('custom.file_upload_path');
     }
 
     public function upload(){
