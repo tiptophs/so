@@ -16,17 +16,6 @@ class Article extends Model{
     protected $dateFormat = 'Y-m-d H:i:s';  //时间字段取出后的默认时间格式
 
 
-    //设置图片地址
-    public function getBackAttr($value){
-        if($value==''){
-            $back = '/static/img/preview.3f4a5e4.jpg';
-        }else{
-            $back = 'http://192.168.1.99/so/service/public/upload/user/'.Session::get('user')['uid'].'/article/'.$value;
-        }
-        return $back;
-    }
-
-
     //设置存储标签格式
     public function setTagAttr($tags){
         if($tags=='') return '';

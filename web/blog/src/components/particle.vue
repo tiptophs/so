@@ -130,7 +130,8 @@
                     category:1,
                     tag: [],
                     content: '',
-                    editor:1
+                    editor:1,
+                    sid:''
                 },
                 tags: [
                     { id: 1, title: '后端', },
@@ -289,7 +290,6 @@
                         this.articles = res.data.value;
                         this.tagId = this.articles.tag.length;
                         this.tags = this.articles.tag;
-                        console.log(this.tags);
 
                         if(this.articles.editor==1){
                             this.$refs.ck.setValue(this.articles.content);
@@ -398,7 +398,8 @@
 <style>
 
     .markdown-body {
-        max-height: 825px;   
+        max-height: 825px;
+        min-height: 825px !important;   
     }
 
 </style>

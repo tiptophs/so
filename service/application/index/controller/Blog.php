@@ -42,8 +42,10 @@ class Blog extends Th {
     public function save(){
         if(Request::post()){        //判断是否为post提交数据
             $data = Request::param();
+            $data['uid'] = Session::get('user')['uid'];
             $file = Request::file('back');
 
+            //文件上传
             if(!is_null($file)){
                 // 移动到框架应用根目录/public/uploads/user 目录下
                 $info = $file->rule('uniqid')->move($this->article_upload_path);
@@ -51,16 +53,28 @@ class Blog extends Th {
                 //修改尺寸
                 //resize_image($info->getSaveName(), $this->article_upload_path.'/'.$info->getSaveName(), 1611, 946);
             }
-
-            $data['uid'] = Session::get('user')['uid'];
+            
+            //验证数据
             $check = $this->checkSaveArticle($data);
-
             if($check['status']){
-                $article = Article::create($data);
-                if($article){
-                    return json(['status'=>true, 'prompt'=>'数据存储成功！']);
+
+                if($data['sid']==''){
+                    //添加数据
+                    unset($data['sid']);
+                    $article = Article::create($data);
+                    if($article){
+                        return json(['status'=>true, 'prompt'=>'数据存储成功！']);
+                    }else{
+                        return json(['status'=>false, 'prompt'=>'数据存储失败，请稍后重试...']);
+                    }
                 }else{
-                    return json(['status'=>false, 'prompt'=>'数据存储失败，请稍后重试...']);
+                    //更新数据 
+                    $up = Article::update($data);
+                    if($up){
+                        return json(['status'=>true, 'prompt'=>'数据更新成功！']);
+                    }else{
+                        return json(['status'=>false, 'prompt'=>'数据更新失败，请稍后重试...']);
+                    }
                 }
             }else{
                 return json(['status'=>false, 'prompt'=>$check['message']]);
@@ -79,7 +93,11 @@ class Blog extends Th {
 
         $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
         $sid = Request::param('sid');
-        if(Article::destroy($sid)){
+        
+        $article = Article::get($sid);
+        $path = $article['back'];
+        if($article->delete()){
+            $this->unlinkPathFile($path);
             return json($ret);
         }else{
             $ret['prompt']='删除数据失败...';
@@ -249,6 +267,14 @@ class Blog extends Th {
     protected function getFileNameByTime()
     {
         return date('Ymd', time());
+    }
+
+    /**
+     * 删除指定路径下的文件
+     * @param $path string
+     */
+    protected function unlinkPathFile($path){
+        return unlink($path);
     }
 
 
