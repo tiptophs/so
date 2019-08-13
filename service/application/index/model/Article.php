@@ -39,4 +39,22 @@ class Article extends Model{
         }
         return $tagStr;
     }
+
+
+    //设置获取存储标签格式
+    public function getTagAttr($tags){
+        $ret_tags = array();
+        if($tags=='') $ret_tags;
+
+        $tagData = explode(',', $tags);
+        if(count($tagData)!=0){
+            foreach($tagData as $index=>$item){
+                $tag = array();
+                $tag['id'] = $index;
+                $tag['title'] = str_replace(']', '', str_replace('[', '', $item));
+                array_push($ret_tags, $tag);
+            }
+        }
+        return $ret_tags;
+    }
 }

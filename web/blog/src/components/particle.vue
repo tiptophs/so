@@ -16,7 +16,7 @@
         <div class="wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" v-if="isAdd">
                         <button type="button" class="btn btn-default" style="margin-bottom:15px;" @click="switchEditor"> 切换编辑模式 </button>
                     </div>
                 </div>
@@ -164,7 +164,8 @@
                     { id:16, title:'日常生活' }
                 ],
                 skills:[],
-                isCk: true              //默认编辑模式为ckeditor
+                isCk: true,              //默认编辑模式为ckeditor
+                isAdd: true
                 
             };
         },
@@ -271,6 +272,8 @@
                 let sid  = this.$route.query.sid;
                 if( sid=='' || typeof sid == 'undefined') return false;
 
+                this.isAdd = false;
+
                 let url = '/api/index/blog/detail';              // 这里就是刚才的config/index.js中的/api
                 this.$axios({                                   //请求数据
                     method: "post",
@@ -284,17 +287,17 @@
                     if(res.data.status){
                         //转换数据格式
                         this.articles = res.data.value;
-                        this.$refs.ck.setValue(this.articles.content);
+                        this.tagId = this.articles.tag.length;
+                        this.tags = this.articles.tag;
+                        console.log(this.tags);
+
+                        if(this.articles.editor==1){
+                            this.$refs.ck.setValue(this.articles.content);
+                            this.isCk = true;
+                        }else{
+                            this.isCk = false;
+                        }
                         //console.log(this.articles);
-                    }else{
-                        this.showDialog = true;
-                        this.dialogOption.text = res.data.prompt;
-                        this.dialogOption.confirmDisplay = false;
-                        this.$refs.dialog.confirm().then(() => {
-                            this.showDialog = false;
-                        }).catch(() => {
-                            this.showDialog = false;
-                        })
                     }
                 }).catch(function(err){
                     this.showDialog = true;
@@ -395,7 +398,7 @@
 <style>
 
     .markdown-body {
-        min-height: 825px !important;   
+        max-height: 825px;   
     }
 
 </style>
