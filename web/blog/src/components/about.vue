@@ -98,10 +98,10 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                        <h4 style="line-height:1.5;height:66px;">{{ item.title }}</h4>
+                                        <router-link tag="h4" style="line-height:1.5;height:66px;cursor:pointer;" :to="{name:'skill', query:{category:item.sid}}">{{ item.title }}</router-link>
                                         <p style="height:64px;overflow:hidden;">{{ item.desc }}</p>
                                         <div class="agileits-button two">
-                                            <router-link tag="a" class="btn btn-primary btn-lg hvr-underline-from-left" :to="{ name:'skill', query:{ sid:item.sid } }" role="button" style="margin-top:0px;">了解更多</router-link>
+                                            <router-link tag="a" class="btn btn-primary btn-lg hvr-underline-from-left" :to="{ name:'skill', query:{ category:item.sid } }" role="button" style="margin-top:0px;">了解更多</router-link>
                                         </div>
                                     </div>
                                     <div class="clearfix"> </div>

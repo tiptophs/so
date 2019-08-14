@@ -18,7 +18,7 @@ class Index extends Controller
 
 
     public function test(){
-        Config::get('custom.file_upload_path');
+        var_dump(Config::get());
     }
 
     public function upload(){

@@ -274,4 +274,8 @@
         /*white-space: pre;*/
     }
 
+    .article-detail p{
+        word-break: break-all;
+    }
+
 </style>

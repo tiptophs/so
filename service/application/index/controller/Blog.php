@@ -79,7 +79,7 @@ class Blog extends Th {
         $sid = Request::param('sid');
         
         $article = Article::get($sid);
-        $path = Config::get('custom.file_upload_path').'/'. $sid.'/'.$article['back'];
+        $path = Config::get('custom.file_upload_path').'/'. $article['uid'].'/'.$article['back'];
         if($article->delete()){
             $this->unlinkPathFile($path);
             return json($ret);
@@ -154,6 +154,103 @@ class Blog extends Th {
     }
 
 
+    /**
+     * 修改文章的状态
+     */
+    public function updateStatus(){
+        //设置数据返回值
+        $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        //获取提交的数据
+        $data = Request::param();
+        if($data['sid'] == '') {
+            $ret['status'] = false;
+            $ret['prompt'] = '文章实例不存在...';
+            return json($ret);
+        }
+
+        $article = Article::get($data['sid']);
+        $article->status = $data['status'];
+        if($article->save()){
+            return json($ret);
+        }else{
+            $ret['status'] = false;
+            $ret['prompt'] = '数据更新失败,请稍候重试...';
+            return json($ret);  
+        }
+    }
+
+
+    /**
+     * 通过日期时间获取文章列表
+     * @return $json string
+     */
+    public function getListByTime(){
+        
+        //设置默认数据返回值
+        $ret=array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        //设置开始年份
+        $startYear = '2019';
+        //获取当前年份
+        $currentYear = date('Y', time()); 
+        // 根据主键获取多个数据
+        $list = Article::all();
+
+        //设置存储列表数组
+        $TimeData = array();
+        
+        //循环年份,查询时间内文章
+        for($startYear; $startYear<=$currentYear; $startYear++){
+            
+            //设置年份数组
+            $num = 0;
+
+            // 对数据集进行遍历操作
+            foreach($list as $key=>$article){
+                if(date("Y", strtotime($article['create_time']))==$startYear){
+                    $num = $num+1;
+                }
+                
+            }
+            $year = array('year'=>$startYear.' 1月-12月', 'num'=>$num);
+            array_push($TimeData, $year);   
+        }
+
+        $ret['value'] = $TimeData;
+        return json($ret);
+    }
+
+
+    /**
+     * 获取技能列表下发布的相关文章
+     */
+    public function getSkillArticle(){
+        //设置默认返回值
+        $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        $category = Request::param('category');
+        if( $category=='' ){
+            $ret['status'] = false;
+            $ret['prompt'] = '您所查询的技能列表不存在';
+            return json($ret);
+        }
+
+        // 使用查询构造器查询
+        $list = Article::where([
+            'category'=>$category,
+            'status'=>'1'
+        ])->select();
+        
+        if($list){
+            $ret['value'] = $list;
+            return json($ret);
+        }else{
+            $ret['status'] = false;
+            $ret['prompt'] = '请求数据异常...'; 
+            return json($ret);
+        }
+    }
 
 
 
