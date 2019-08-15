@@ -9,28 +9,11 @@ use think\facade\Validate;
 use app\index\model\Article;
 use think\facade\Session;
 use think\facade\Env;
+use think\facade\Config;
 
 class Blog extends Th {
 
-    public $base_upload_path = '';
-    public $article_upload_path = '';
-
-    /**
-     * 构造函数
-     */
-    public function __construct(App $app = null)
-    {
-        parent::__construct($app);
-    }
-
-    /**
-     *初始化
-     */
-    public function initialize(){
-        $this->base_upload_path = Env::get('root_path').'public/upload/user';
-        $this->article_upload_path = $this->base_upload_path.'/'.Session::get('user')['uid'].'/article/'.$this->getFileNameByTime();
-    }
-
+    
     //+---------------------------------------
     //|    文章创建、编辑、删除、查询等操作部分
     //+---------------------------------------
@@ -42,25 +25,40 @@ class Blog extends Th {
     public function save(){
         if(Request::post()){        //判断是否为post提交数据
             $data = Request::param();
+            $data['uid'] = Session::get('user')['uid'];
             $file = Request::file('back');
 
+            //文件上传
             if(!is_null($file)){
                 // 移动到框架应用根目录/public/uploads/user 目录下
-                $info = $file->rule('uniqid')->move($this->article_upload_path);
+                $upload_path = Config::get('custom.file_upload_path').'/'. $data['uid'].'/'.$this->getFileNameByTime();
+                $info = $file->rule('uniqid')->move($upload_path);
                 $data['back'] = $this->getFileNameByTime().'/'.$info->getSaveName();
                 //修改尺寸
                 //resize_image($info->getSaveName(), $this->article_upload_path.'/'.$info->getSaveName(), 1611, 946);
             }
-
-            $data['uid'] = Session::get('user')['uid'];
+            
+            //验证数据
             $check = $this->checkSaveArticle($data);
-
             if($check['status']){
-                $article = Article::create($data);
-                if($article){
-                    return json(['status'=>true, 'prompt'=>'数据存储成功！']);
+
+                if($data['sid']==''){
+                    //添加数据
+                    unset($data['sid']);
+                    $article = Article::create($data);
+                    if($article){
+                        return json(['status'=>true, 'prompt'=>'数据存储成功！']);
+                    }else{
+                        return json(['status'=>false, 'prompt'=>'数据存储失败，请稍后重试...']);
+                    }
                 }else{
-                    return json(['status'=>false, 'prompt'=>'数据存储失败，请稍后重试...']);
+                    //更新数据 
+                    $up = Article::update($data);
+                    if($up){
+                        return json(['status'=>true, 'prompt'=>'数据更新成功！']);
+                    }else{
+                        return json(['status'=>false, 'prompt'=>'数据更新失败，请稍后重试...']);
+                    }
                 }
             }else{
                 return json(['status'=>false, 'prompt'=>$check['message']]);
@@ -79,7 +77,13 @@ class Blog extends Th {
 
         $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
         $sid = Request::param('sid');
-        if(Article::destroy($sid)){
+        
+        $article = Article::get($sid);
+        $path = Config::get('custom.file_upload_path').'/'. $article['uid'].'/'.$article['back'];
+        if($article->delete()){
+            if($article['back']!=''){
+                $this->unlinkPathFile($path);
+            }
             return json($ret);
         }else{
             $ret['prompt']='删除数据失败...';
@@ -152,6 +156,103 @@ class Blog extends Th {
     }
 
 
+    /**
+     * 修改文章的状态
+     */
+    public function updateStatus(){
+        //设置数据返回值
+        $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        //获取提交的数据
+        $data = Request::param();
+        if($data['sid'] == '') {
+            $ret['status'] = false;
+            $ret['prompt'] = '文章实例不存在...';
+            return json($ret);
+        }
+
+        $article = Article::get($data['sid']);
+        $article->status = $data['status'];
+        if($article->save()){
+            return json($ret);
+        }else{
+            $ret['status'] = false;
+            $ret['prompt'] = '数据更新失败,请稍候重试...';
+            return json($ret);  
+        }
+    }
+
+
+    /**
+     * 通过日期时间获取文章列表
+     * @return $json string
+     */
+    public function getListByTime(){
+        
+        //设置默认数据返回值
+        $ret=array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        //设置开始年份
+        $startYear = '2019';
+        //获取当前年份
+        $currentYear = date('Y', time()); 
+        // 根据主键获取多个数据
+        $list = Article::all();
+
+        //设置存储列表数组
+        $TimeData = array();
+        
+        //循环年份,查询时间内文章
+        for($startYear; $startYear<=$currentYear; $startYear++){
+            
+            //设置年份数组
+            $num = 0;
+
+            // 对数据集进行遍历操作
+            foreach($list as $key=>$article){
+                if(date("Y", strtotime($article['create_time']))==$startYear){
+                    $num = $num+1;
+                }
+                
+            }
+            $year = array('year'=>$startYear.' 1月-12月', 'num'=>$num);
+            array_push($TimeData, $year);   
+        }
+
+        $ret['value'] = $TimeData;
+        return json($ret);
+    }
+
+
+    /**
+     * 获取技能列表下发布的相关文章
+     */
+    public function getSkillArticle(){
+        //设置默认返回值
+        $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        $category = Request::param('category');
+        if( $category=='' ){
+            $ret['status'] = false;
+            $ret['prompt'] = '您所查询的技能列表不存在';
+            return json($ret);
+        }
+
+        // 使用查询构造器查询
+        $list = Article::where([
+            'category'=>$category,
+            'status'=>'1'
+        ])->select();
+        
+        if($list){
+            $ret['value'] = $list;
+            return json($ret);
+        }else{
+            $ret['status'] = false;
+            $ret['prompt'] = '请求数据异常...'; 
+            return json($ret);
+        }
+    }
 
 
 
@@ -204,6 +305,39 @@ class Blog extends Th {
         return $ret;
     }
 
+   /**
+     * 文章数据填写验证
+     * @param $data
+     * @return array
+     */
+    protected function checkMarkSave(){
+        //设置返回数组
+        $ret = array('status'=>true);
+
+        //定义验证字段
+        $rule = [
+            'title|标题'=>[
+                'require' => 'require',
+                'max'     => '60'
+            ],
+            'category|分类'=>[
+                'require' => 'require'
+            ],
+            'content|正文'=>[
+                'require' => 'require'
+            ]
+        ];
+
+        //初始化验证过则
+        Validate::rule($rule);
+        //验证数据
+        if(!Validate::check($data)){
+            $ret['message'] = Validate::getError();
+            $ret['status'] = false;
+        }
+        return $ret;
+    }
+
 
     //+------------------------------
     //|         工具函数部分
@@ -218,6 +352,21 @@ class Blog extends Th {
         return date('Ymd', time());
     }
 
+    /**
+     * 删除指定路径下的文件
+     * @param $path string
+     */
+    protected function unlinkPathFile($path){
+        return unlink($path);
+    }
 
+
+    //+------------------------------- 
+    //|         测试函数部分
+    //+-------------------------------
+
+    public function test(){
+        echo 'this controller is ok';
+    }
 
 }

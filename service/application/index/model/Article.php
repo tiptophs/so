@@ -16,13 +16,6 @@ class Article extends Model{
     protected $dateFormat = 'Y-m-d H:i:s';  //时间字段取出后的默认时间格式
 
 
-    //设置图片地址
-    public function getBackAttr($value){
-        $back = 'http://192.168.127.128/so/service/public/upload/user/'.Session::get('user')['uid'].'/article/'.$value;
-        return $back;
-    }
-
-
     //设置存储标签格式
     public function setTagAttr($tags){
         if($tags=='') return '';
@@ -34,5 +27,23 @@ class Article extends Model{
             }
         }
         return $tagStr;
+    }
+
+
+    //设置获取存储标签格式
+    public function getTagAttr($tags){
+        $ret_tags = array();
+        if($tags=='') $ret_tags;
+
+        $tagData = explode(',', $tags);
+        if(count($tagData)!=0){
+            foreach($tagData as $index=>$item){
+                $tag = array();
+                $tag['id'] = $index;
+                $tag['title'] = str_replace(']', '', str_replace('[', '', $item));
+                array_push($ret_tags, $tag);
+            }
+        }
+        return $ret_tags;
     }
 }

@@ -24,12 +24,19 @@
                         <div class="single-left1">
                             <img :src="articles.back" alt=" " class="img-responsive" />
                             <h3>{{ articles.desc }}</h3>
-                            <ul>
+                            <ul style="margin-bottom:25px;">
                                 <li><span class="fa fa-user" aria-hidden="true"></span><a href="#">Michael Smith</a></li>
                                 <li><span class="fa fa-tag" aria-hidden="true"></span><a href="#">5 Tags</a></li>
                                 <li><span class="fa fa-envelope-o" aria-hidden="true"></span><a href="#">5 Comments</a></li>
                             </ul>
-                            <p v-html="articles.content" v-highlightB></p>
+                            
+                            <div class="article-detail" v-if="isCk">
+                                <p v-html="articles.content" v-highlightB></p>
+                            </div>
+
+                            <div class="article-detail markdown-body" v-if="!isCk">
+                                <v-mark v-bind:detail="articles.content"></v-mark>
+                            </div>
 
                         </div>
 
@@ -193,7 +200,8 @@
         name: 'message',
         data () {
             return {
-                articles:{},             //文章详情
+                articles:{},                //文章详情
+                isCk:true                   //默认编辑器展示格式
             }
         },
         methods: {
@@ -212,10 +220,8 @@
                     if(res.data.status){
                         //转换数据格式
                         this.articles = res.data.value;
-                        //this.totalNum = res.data.value.totalNum;
-                        //this.pageNum = Math.ceil((this.totalNum)/ptn);
-                        //this.getPageLine(cp, Math.ceil((this.totalNum)/ptn));
-
+                        //采用哪个编辑器显示html
+                        this.isCk = this.articles.editor==1? true: false;
                     }
                 }).catch(function(err) {})
             }
@@ -266,6 +272,10 @@
         padding: 5px!important;
         margin: 0 !important;
         /*white-space: pre;*/
+    }
+
+    .article-detail p{
+        word-break: break-all;
     }
 
 </style>

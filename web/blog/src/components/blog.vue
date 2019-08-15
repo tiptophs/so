@@ -22,7 +22,7 @@
                     <div class="col-md-8 event-left w3-agile-event-left">
 
                         <template v-for="(item, index ) in articles">
-                            <div class="event-left1 w3-agile-event-left1">
+                            <div class="event-left1 w3-agile-event-left1" :key="index">
                                 <div class="event-left1-left agile-event-left1-left">
                                     <a href="single.html"><img :src="item.back" alt=" " class="img-responsive" /></a>
                                     <div class="event-left1-left-pos agileits-w3layouts-event-left1-left-pos">
@@ -51,7 +51,7 @@
                                 <li><a href="javascript:;" aria-label="Previous"><span aria-hidden="true"> << </span></a></li>
 
                                 <template v-for="(item, index) in pageLine">
-                                    <li :id="index"><a :class="{ active: item.isActive }" @click="getPublishArticles( item.page )" href="javascript:;"><span aria-hidden="true">{{ item.page }}</span></a></li>
+                                    <li :key="index"><a :class="{ active: item.isActive }" @click="getPublishArticles( item.page )" href="javascript:;"><span aria-hidden="true">{{ item.page }}</span></a></li>
                                 </template>
 
                                 <li><a href="javascript:;" aria-label="Next"><span aria-hidden="true"> >> </span></a></li>

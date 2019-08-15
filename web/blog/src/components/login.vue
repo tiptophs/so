@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div id="video-container">
-            <video poster="" autoplay muted loop class="vidbacking">
+            <video poster="../assets/login/video/Ipad.jpg" autoplay muted loop class="vidbacking">
                 <source src="../assets/login/video/Ipad.mp4" type="video/mp4">
             </video>
 

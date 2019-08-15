@@ -1,6 +1,7 @@
 <?php
 
 namespace app\index\controller;
+
 use app\common\controller\Th;
 use think\facade\Request;
 use think\facade\Validate;
@@ -8,23 +9,6 @@ use app\index\model\User;
 use think\facade\Session;
 
 class Login extends Th{
-
-    /**
-     * 构造函数
-     * Login constructor.
-     */
-    public function __construct(){
-
-    }
-
-
-    /**
-     * 初始化方法
-     */
-    public function initialize(){
-
-    }
-
 
     /**
      * 登录操作
@@ -70,7 +54,7 @@ class Login extends Th{
             $check = $this->checkRegister($data);
             $data['uid'] = $this->getUserNumber();      //自动生成用户编号
             if($check['status']){                       //添加数据
-                unset($data['password_confirm']);
+                unset($data['confirm_password']);
                 $user = User::create($data, true);
                 if($user){
                     //存储用户信息到session
@@ -166,6 +150,17 @@ class Login extends Th{
             $username .= $chars[mt_rand(0, strlen($chars))];
         }
         return strtoupper(base_convert(time() - 1420070400, 10, 16)).$username;
+    }
+
+
+
+
+    //+---------------------------
+    //|         测试函数
+    //+---------------------------
+
+    public function test(){
+        echo 'this controller is ok';
     }
 
 

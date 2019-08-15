@@ -43,8 +43,8 @@
                             </div>
                             <div class="personal-operations">
                                 <div class="list-group">
-                                    <router-link to="/personal" tag="a" href="javascript:;" class="list-group-item" style="border-radius: 0px;">首页</router-link>
-                                    <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">写笔记</router-link>
+                                    <router-link to="/personal" tag="a" href="javascript:;" class="list-group-item" style="border-radius: 0px;">我的首页</router-link>
+                                    <router-link to="/personal/particle" tag="a" href="javascript:;" class="list-group-item">琐碎笔记</router-link>
                                     <a href="#" class="list-group-item">笔记查询</a>
                                     <a href="#" class="list-group-item">页面控制</a>
                                     <a href="#" class="list-group-item" style="border-bottom:1px solid #ccc;">分类管理</a>
@@ -58,18 +58,12 @@
                             </h3>
                             <div class="article-line">
                                 <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <a class="year">2015年1月-12月</a>
-                                        <span class="badge">14</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a class="year">2015年1月-12月</a>
-                                        <span class="badge">2</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a class="year">2015年1月-12月</a>
-                                        <span class="badge">1</span>
-                                    </li>
+                                    <template v-for="(art, index) in timeLine">
+                                        <li class="list-group-item" :key="index">
+                                            <a class="year">{{ art.year }}</a>
+                                            <span class="badge">{{ art.num }}</span>
+                                        </li>
+                                    </template>
                                 </ul>
                             </div>
                         </div>
@@ -88,19 +82,20 @@
                             </div>
                             <div class="articles-content">
                                 <template v-for="(item, index) in articles">
-                                    <div class="article-item" :id="index">
+                                    <div class="article-item" :key="index">
                                         <h3><router-link :to="{ name:'message', query:{ sid:item.sid } }" href="javascript:;">{{ item.title }}</router-link></h3>
                                         <p>{{ item.desc }}</p>
                                         <div class="bot">
                                             <div class="art-meta">
                                                 <i class="fa fa-calendar"></i> <span class="time"> {{ item.create_time }}</span>
-                                                <i class="fa fa-eye"></i> <span class="read"> {{ item.clicks || 0 }}</span>
-                                                <i class="fa fa-heart"></i> <span class="read"> {{ item.collection || 0 }}</span>
+                                                <!--<i class="fa fa-eye"></i> <span class="read"> {{ item.clicks || 0 }}</span>
+                                                <i class="fa fa-heart"></i> <span class="read"> {{ item.collection || 0 }}</span>-->
                                             </div>
                                             <div class="operation">
-                                                <router-link tag="a" :to="{ name:'particle', query:{ sid:item.sid } }"><i class="fa fa-mail-reply"></i> 展示</router-link>
-                                                <router-link tag="a" :to="{ name:'particle', query:{ sid:item.sid } }"><i class="fa fa-edit"></i> 编辑</router-link>
-                                                <a href="javascript:;" @click="delArticle(item.sid)"><i class="fa fa-trash-o"></i> 删除</a>
+                                                <a href="javascript:;" @click="publish(item.sid)" v-if="item.status==0" ><i class="fa fa-smile-o"></i> 发布</a>
+                                                <a href="javascript:;" @click="revoke(item.sid)" v-if="item.status==1" ><i class="fa fa-frown-o"></i> 撤销</a>
+                                                <router-link tag="a" :to="{ name:'particle', query:{ sid:item.sid } }" v-if="item.status==0" ><i class="fa fa-edit"></i> 编辑</router-link>
+                                                <a href="javascript:;" @click="delArticle(item.sid)" v-if="item.status==0" ><i class="fa fa-trash-o"></i> 删除</a>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +109,7 @@
                                 <li><a href="javascript:;" aria-label="Previous"><span aria-hidden="true"> << </span></a></li>
 
                                 <template v-for="(item, index) in pageLine">
-                                    <li :id="index"><a :class="{ active: item.isActive }" @click="getArticles( item.page )" href="javascript:;"><span aria-hidden="true">{{ item.page }}</span></a></li>
+                                    <li :key="index"><a :class="{ active: item.isActive }" @click="getArticles( item.page )" href="javascript:;"><span aria-hidden="true">{{ item.page }}</span></a></li>
                                 </template>
 
                                 <li><a href="javascript:;" aria-label="Next"><span aria-hidden="true"> >> </span></a></li>
@@ -138,13 +133,15 @@
                 pageLine:[],         //文章分页数据
                 totalNum: 0,         //总条目数
                 pageNum:1,           //文章页码数
-                currentPage:1        //当前也码数
+                currentPage:1,       //当前也码数
+                timeLine:[]
             }
         },
         components:{
 
         },
         methods:{
+            //获取相应页码数文章
             getArticles: function (cp=1, ptn=5) {
                 if(cp == '...') return false;
                 let url = '/api/index/blog/getArticles';        // 这里就是刚才的config/index.js中的/api
@@ -168,6 +165,7 @@
                     }
                 }).catch(function(err) {})
             },
+            //分页器
             getPageLine: function ( dqPage, pageCount ) {              //获取当前页码样式列表
                 this.pageLine = [];                                    //重新赋值
 
@@ -249,10 +247,11 @@
                             this.pageLine.push(item);
 
                         }
-                        console.log(this.pageLine);
+                        //console.log(this.pageLine);
                     }
                 }
             },
+            //删除
             delArticle: function( sid ){
                 if( sid=='' ) return false;
                 this.$axios({
@@ -268,10 +267,70 @@
                         this.getArticles(this.currentPage);
                     }
                 }).catch(err=>{});
+            },
+            //发布
+            publish: function( sid ){
+                if( sid=='' ) return false;
+                this.$axios({
+                    method: "post",
+                    url: '/api/index/blog/updateStatus',
+                    param:{},
+                    data:{sid:sid, status:1},
+                    transformRequest:[data=>{
+                        return this.qs.stringify(data);
+                    }]
+                }).then(res=>{
+                    if( res.data.status ){
+                       this.articles.forEach(function(value, index){
+                           if(value['sid'] == sid){
+                               value['status'] = 1;
+                           }
+                       });
+                    }
+                }).catch(err=>{});
+            },
+            //撤销
+            revoke: function( sid ){
+                if( sid=='' ) return false;
+                this.$axios({
+                    method: "post",
+                    url: '/api/index/blog/updateStatus',
+                    param:{},
+                    data:{sid:sid, status:0},
+                    transformRequest:[data=>{
+                        return this.qs.stringify(data);
+                    }]
+                }).then(res=>{
+                    if( res.data.status ){
+                        this.articles.forEach(function(value, index){
+                           if(value['sid'] == sid){
+                               value['status'] = 0;
+                           }
+                       });
+                    }
+                }).catch(err=>{});
+            },
+            //归档
+            gitListByTime: function(){
+                this.$axios({
+                    method: "post",
+                    url: '/api/index/blog/getListByTime',
+                    param:{},
+                    data:{},
+                    transformRequest:[data=>{
+                    }]
+                }).then(res=>{
+                    if(res.data.status){
+                        this.timeLine = res.data.value;
+                    }
+                }).catch(err=>{
+
+                });
             }
         },
         mounted() {
             this.getArticles();
+            this.gitListByTime();
         }
     }
 </script>

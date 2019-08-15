@@ -44,6 +44,15 @@ Vue.use(Highlight);
 import ckeditor from './components/plugins/ckeditor/index.js'
 Vue.use( ckeditor);
 
+//引入markdown组件
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+
+//引入markdown 模板转义为html组件
+import mark from './components/plugins/mark/mark.js'
+Vue.use( mark );
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

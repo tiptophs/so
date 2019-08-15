@@ -12,7 +12,7 @@
                 </ul>
             </div>
         </div>
-        <!--标语-->
+        <!--标语
         <div class="banner-bottom">
             <div class="banner_bottom_w3ls_info">
                 <div class="wthree_head_section">
@@ -32,8 +32,8 @@
                     <a class="btn btn-primary btn-lg hvr-underline-from-left" href="javascript:;" role="button">本前台采用Vue.js框架 →_→！</a>
                 </div>
             </div>
-        </div>
-        <!--关于我介绍-->
+        </div>-->
+        <!--关于我介绍
         <div class="about" id="welcome">
             <div class="container">
                 <div class="wthree_head_section">
@@ -75,165 +75,40 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <!--我的技能-->
         <div class="banner-bottom service_agile">
             <div class="container">
 
-                <div class="wthree_head_section">
+                <!--<div class="wthree_head_section">
                     <h3 class="w3l_header"> ( ˘•灬•˘ )<span>我的技术储备</span></h3>
-                </div>
+                </div>-->
 
                 <div class="agile_wthree_inner_grids row">
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-laptop" aria-hidden="true"></i>
+                    <!-- 循环我的技能数据 -->
+                    
+                    <template v-for="item in skills">
+                        <div class="col-md-4 agileits_banner_bottom_left" :key="item.sid" style="height:219px;margin-bottom:15px;">
+                            <div class="agileinfo_banner_bottom_pos">
+                                <div class="w3_agileits_banner_bottom_pos_grid">
+                                    <div class="col-xs-3 wthree_banner_bottom_grid_left">
+                                        <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
+                                            <i class="fa fa-laptop" aria-hidden="true"></i>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>Php/ThinkPhp/CI/后台服务</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
+                                    <div class="col-xs-9 wthree_banner_bottom_grid_right">
+                                        <router-link tag="h4" style="line-height:1.5;height:66px;cursor:pointer;" :to="{name:'skill', query:{category:item.sid}}">{{ item.title }}</router-link>
+                                        <p style="height:64px;overflow:hidden;">{{ item.desc }}</p>
+                                        <div class="agileits-button two">
+                                            <router-link tag="a" class="btn btn-primary btn-lg hvr-underline-from-left" :to="{ name:'skill', query:{ category:item.sid } }" role="button" style="margin-top:0px;">了解更多</router-link>
+                                        </div>
                                     </div>
+                                    <div class="clearfix"> </div>
                                 </div>
-                                <div class="clearfix"> </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>Bootstrap/响应式布局框架</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
-                                    </div>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-mobile" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>Vue.js/前台编程框架</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
-                                    </div>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="agile_wthree_inner_grids row">
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-laptop" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>Python/相关爬虫技术</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
-                                    </div>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>Mysql/Redis/MongoDb/数据库相关</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
-                                    </div>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-mobile" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>NodeJs/ES6/javascript/Jquery相关</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
-                                    </div>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="agile_wthree_inner_grids row">
-
-                    <div class="col-md-4 agileits_banner_bottom_left">
-                        <div class="agileinfo_banner_bottom_pos">
-                            <div class="w3_agileits_banner_bottom_pos_grid">
-                                <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                        <i class="fa fa-laptop" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                    <h4>其他杂项...</h4>
-                                    <p>Morbi viverra lacus commodo felis semper, eu iaculis lectus feugiat.</p>
-                                    <div class="agileits-button two">
-                                        <a class="btn btn-primary btn-lg hvr-underline-from-left" href="single.html" role="button">Read More »</a>
-                                    </div>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
-                    </div>
+                    </template>
 
                 </div>
 
@@ -251,16 +126,30 @@
     export default {
         data(){
             return {
-
+                skills:[]           //技能对象
             }
         },
         methods:{
-            initCarousel:function(){
-
+            //获取我的相关技能，并且展示
+            gitskills:function(){                   
+                let url = '/api/index/tool/getSkills';        // 这里就是刚才的config/index.js中的/api
+                this.$axios({
+                    method: "post",
+                    url: url,
+                    param:{},
+                    data: {},
+                    transformRequest: [data=> {
+                        return this.qs.stringify(data);
+                    }]
+                }).then(res => {
+                    if(res.data.status){
+                        this.skills = res.data.result;
+                    }
+                }).catch(function(err) {})
             }
         },
         mounted(){
-            this.initCarousel();
+            this.gitskills();
         }
 
     }

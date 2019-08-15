@@ -14,10 +14,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^12.1.0",
-    "@ckeditor/ckeditor5-vue": "^1.0.0-beta.2",
     "axios": "^0.18.0",
+    "highlight.js": "^9.15.8",
     "jquery": "^3.3.1",
+    "marked": "^0.7.0",
+    "mavon-editor": "^2.7.5",
     "popper.js": "^1.14.7",
     "qs": "^6.7.0",
     "vue": "^2.5.2",
