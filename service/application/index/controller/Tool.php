@@ -37,7 +37,8 @@ class Tool extends Th
             'website'=>array(                   //收录网站
                 'title'=>'网站收录',
                 'item'=>array(
-                    ['img'=>'http://www.php.cn/static/images/logo.png', 'desc'=>'php中文网(视频教程)', 'href'=>'http://www.php.cn/'] 
+                    ['img'=>'http://www.php.cn/static/images/logo.png', 'desc'=>'php中文网(视频教程)', 'href'=>'http://www.php.cn/'], 
+                    ['img'=>'https://7nsts.w3cschool.cn/images/w3c/header-logo.png', 'desc'=>'w3c school ES5-6教程', 'href'=>'https://www.w3cschool.cn/ecmascript/']
                 )
             )
         );
