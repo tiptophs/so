@@ -81,7 +81,9 @@ class Blog extends Th {
         $article = Article::get($sid);
         $path = Config::get('custom.file_upload_path').'/'. $article['uid'].'/'.$article['back'];
         if($article->delete()){
-            $this->unlinkPathFile($path);
+            if($article['back']!=''){
+                $this->unlinkPathFile($path);
+            }
             return json($ret);
         }else{
             $ret['prompt']='删除数据失败...';

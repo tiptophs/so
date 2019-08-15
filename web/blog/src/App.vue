@@ -41,7 +41,7 @@
                         this.footerShow = true;
                     }
                 },
-                // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+                // 代表在wacth里声明了handler这个方法之后立即先去执行handler方法
                 immediate: true
             }
         }
