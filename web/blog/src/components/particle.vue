@@ -395,7 +395,7 @@
         float: right;
     }
 </style>
-<style>
+<style scoped>
 
     .markdown-body {
         max-height: 825px;
