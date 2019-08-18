@@ -31,6 +31,26 @@ class Login extends Th{
         }
     }
 
+    /**
+     * 查看用户是否登陆账号
+     * @param return boolean
+     */
+    public function isLogin(){
+        
+        //设置默认返回值
+        $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
+
+        $user = Session::get('user');
+        if(!is_array($user) || $user['name']=='' || $user['uid']==''){
+            $ret['status'] = false;
+            $ret['prompt'] = '您还没有登录噢。';
+        }else{
+            $ret['value'] = $user;
+        }
+
+        return json($ret);
+    }
+
 
     /**
      * 退出操作

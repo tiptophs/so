@@ -82,13 +82,40 @@
                 uName: ''
             }
         },
-        mounted() {
-            if(sessionStorage.user != undefined){
-                let _user = this.qs.parse(sessionStorage.user);
-                this.uName = _user.name;
-                this.showLogin = false;
-                this.showUser = true;
+        methods: {
+            //检测用户是否登陆
+            isLogin: function(){
+                this.$axios({
+                    method: "post",
+                    url: '/api/index/login/isLogin',
+                    param:{},
+                    data: {},
+                    transformRequest: [data=> {
+                        return this.qs.stringify(data);
+                    }]
+                }).then(res=>{
+                    //个人中心页面需要验证
+                    if(res.data.status){   
+                        let _user = res.data.value;
+                        this.uName = _user.name;
+                        this.showLogin = false;
+                        this.showUser = true;
+                    }else{
+                        if(
+                            this.$route.path=='/personal' 
+                            || this.$route.path=='/personal/particle'
+                        ){
+                            this.$router.push("/error");      
+                        }
+                    }
+                    
+                }).catch(err=>{
+                    this.$router.push("/error");
+                });
             }
+        },
+        mounted() {
+            this.isLogin();
         }
     }
 </script>

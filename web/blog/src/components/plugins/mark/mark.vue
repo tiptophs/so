@@ -18,8 +18,9 @@
         code:this.detail
       }
     },
-    mounted(){
-      marked.setOptions({
+    methods: {
+      init: function(){
+        marked.setOptions({
           renderer: new marked.Renderer(),
           highlight: function(code) {
             return hljs.highlightAuto(code).value;
@@ -32,10 +33,19 @@
           smartLists: true,
           smartypants: false,
           xhtml: false
-        }
-      );
-      this.code = marked(this.code)
+        });
+        this.code = marked(this.code);
+      }
     },
+    mounted(){
+      this.init();
+    },
+    watch: {
+      detail(val) {
+        this.code = this.detail;
+        this.init();    
+      }
+    }
   }
 </script>
 
