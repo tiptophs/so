@@ -22,7 +22,9 @@
                 <div class="agile_wthree_inner_grids">
                     <div class="col-md-8 single-left">
                         <div class="single-left1">
-                            <img :src="articles.back" alt=" " class="img-responsive" v-if="articles.back!=''" />
+							<template v-if="articles.back!=''">
+								<img :src="articles.back" alt=" " class="img-responsive" />
+							</template>
                             <h3>{{ articles.desc }}</h3>
                             <ul style="margin-bottom:25px;">
                                 <li><span class="fa fa-user" aria-hidden="true"></span><a href="#">Michael Smith</a></li>

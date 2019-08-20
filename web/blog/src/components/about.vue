@@ -1,18 +1,18 @@
 <template>
-    <div class="about-container">
-        <!--顶部图片展示-->
-        <div class="agile_inner"></div>
-        <!--顶部导航信息-->
-        <div class="services-breadcrumb">
-            <div class="agile_inner_breadcrumb">
+  <div class="about-container">
+    <!--顶部图片展示-->
+    <div class="agile_inner"></div>
+    <!--顶部导航信息-->
+    <div class="services-breadcrumb">
+      <div class="agile_inner_breadcrumb">
 
-                <ul class="w3_short">
-                    <li><a href="index.html">首页</a><span>|</span></li>
-                    <li>关于我</li>
-                </ul>
-            </div>
-        </div>
-        <!--标语
+        <ul class="w3_short">
+          <li><a href="index.html">首页</a><span>|</span></li>
+          <li>关于我</li>
+        </ul>
+      </div>
+    </div>
+    <!--标语
         <div class="banner-bottom">
             <div class="banner_bottom_w3ls_info">
                 <div class="wthree_head_section">
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>-->
-        <!--关于我介绍
+    <!--关于我介绍
         <div class="about" id="welcome">
             <div class="container">
                 <div class="wthree_head_section">
@@ -77,90 +77,102 @@
             </div>
         </div>-->
 
-        <!--我的技能-->
-        <div class="banner-bottom service_agile">
-            <div class="container">
+    <!--我的技能-->
+    <div class="banner-bottom service_agile">
+      <div class="container">
 
-                <!--<div class="wthree_head_section">
-                    <h3 class="w3l_header"> ( ˘•灬•˘ )<span>我的技术储备</span></h3>
-                </div>-->
-
-                <div class="agile_wthree_inner_grids row">
-                    <!-- 循环我的技能数据 -->
-                    
-                    <template v-for="item in skills">
-                        <div class="col-md-4 agileits_banner_bottom_left" :key="item.sid" style="height:219px;margin-bottom:15px;">
-                            <div class="agileinfo_banner_bottom_pos">
-                                <div class="w3_agileits_banner_bottom_pos_grid">
-                                    <div class="col-xs-3 wthree_banner_bottom_grid_left">
-                                        <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
-                                            <i class="fa fa-laptop" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-9 wthree_banner_bottom_grid_right">
-                                        <router-link tag="h4" style="line-height:1.5;height:66px;cursor:pointer;" :to="{name:'skill', query:{category:item.sid}}">{{ item.title }}</router-link>
-                                        <p style="height:64px;overflow:hidden;">{{ item.desc }}</p>
-                                        <div class="agileits-button two">
-                                            <router-link tag="a" class="btn btn-primary btn-lg hvr-underline-from-left" :to="{ name:'skill', query:{ category:item.sid } }" role="button" style="margin-top:0px;">了解更多</router-link>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-
-                </div>
-
-                <div class="clearfix"> </div>
-            </div>
+        <div class="wthree_head_section">
+          <h3 class="w3l_header"> 技术查询手册 </h3>
         </div>
 
+        <div class="agile_wthree_inner_grids row">
+          <!-- 循环我的技能数据 -->
+
+          <template v-for="item in skills">
+            <div class="col-md-4 agileits_banner_bottom_left"
+                 :key="item.sid"
+                 style="height:219px;margin-bottom:15px;">
+              <div class="agileinfo_banner_bottom_pos">
+                <div class="w3_agileits_banner_bottom_pos_grid">
+                  <div class="col-xs-3 wthree_banner_bottom_grid_left">
+                    <div class="agile_banner_bottom_grid_left_grid hvr-radial-out">
+                      <i class="fa fa-laptop"
+                         aria-hidden="true"></i>
+                    </div>
+                  </div>
+                  <div class="col-xs-9 wthree_banner_bottom_grid_right">
+                    <router-link tag="h4"
+                                 style="line-height:1.5;height:66px;cursor:pointer;"
+                                 :to="{name:'skill', query:{category:item.sid}}">{{ item.title }}</router-link>
+                    <p style="height:64px;overflow:hidden;">{{ item.desc }}</p>
+                    <div class="agileits-button two">
+                      <router-link tag="a"
+                                   class="btn btn-primary btn-lg hvr-underline-from-left"
+                                   :to="{ name:'skill', query:{ category:item.sid } }"
+                                   role="button"
+                                   style="margin-top:0px;">了解更多</router-link>
+                    </div>
+                  </div>
+                  <div class="clearfix"> </div>
+                </div>
+              </div>
+            </div>
+          </template>
+
+        </div>
+
+        <div class="clearfix"> </div>
+      </div>
     </div>
+
+  </div>
 </template>
 
 
 <script>
 
 
-    export default {
-        data(){
-            return {
-                skills:[]           //技能对象
-            }
-        },
-        methods:{
-            //获取我的相关技能，并且展示
-            gitskills:function(){                   
-                let url = '/api/index/tool/getSkills';        // 这里就是刚才的config/index.js中的/api
-                this.$axios({
-                    method: "post",
-                    url: url,
-                    param:{},
-                    data: {},
-                    transformRequest: [data=> {
-                        return this.qs.stringify(data);
-                    }]
-                }).then(res => {
-                    if(res.data.status){
-                        this.skills = res.data.result;
-                    }
-                }).catch(function(err) {})
-            }
-        },
-        mounted(){
-            this.gitskills();
-        }
-
+export default {
+  data () {
+    return {
+      skills: []           //技能对象
     }
+  },
+  methods: {
+    //获取我的相关技能，并且展示
+    gitskills: function () {
+      let url = '/api/index/tool/getSkills';        // 这里就是刚才的config/index.js中的/api
+      this.$axios({
+        method: "post",
+        url: url,
+        param: {},
+        data: {},
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          this.skills = res.data.result;
+        }
+      }).catch(function (err) { })
+    }
+  },
+  mounted () {
+    this.gitskills();
+  }
+
+}
 
 </script>
 
 <style>
-    @media (min-width: 1650px){
-        .container {
-            width: 1318px;
-        }
-    }
+@media (min-width: 1650px) {
+  .container {
+    width: 1318px;
+  }
+}
 
+.banner-bottom {
+  padding: 2em 0;
+}
 </style>
