@@ -51,63 +51,103 @@
                 <li class="list-group-item">图像的数量</li>
                 <li class="list-group-item">24*7 支持</li>
                 <li class="list-group-item">每年更新成本</li>
+                <li class="list-group-item">免费域名注册</li>
+                <li class="list-group-item">免费 Window 空间托管</li>
+                <li class="list-group-item">图像的数量</li>
+                <li class="list-group-item">24*7 支持</li>
+                <li class="list-group-item">每年更新成本</li>
+                <li class="list-group-item">免费域名注册</li>
+                <li class="list-group-item">免费 Window 空间托管</li>
+                <li class="list-group-item">图像的数量</li>
+                <li class="list-group-item">24*7 支持</li>
+                <li class="list-group-item">每年更新成本</li>
               </ul>
             </div>
 
-            <div class="col-md-4">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>名称</th>
-                    <th>城市</th>
-                    <th>邮编</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Tanmay</td>
-                    <td>Bangalore</td>
-                    <td>560001</td>
-                  </tr>
-                  <tr>
-                    <td>Sachin</td>
-                    <td>Mumbai</td>
-                    <td>400003</td>
-                  </tr>
-                  <tr>
-                    <td>Uma</td>
-                    <td>Pune</td>
-                    <td>411027</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-md-4">
-              <form role="form">
-                <div class="form-group">
-                  <label for="name">名称</label>
-                  <input type="text"
-                         class="form-control"
-                         id="name"
-                         placeholder="请输入名称">
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-md-12">
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label for="tools-type"
+                             class="col-sm-2 control-label">所选工具项</label>
+                      <div class="col-sm-10">
+                        <input type="email"
+                               class="form-control"
+                               id="tools-type"
+                               disabled>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="title"
+                             class="col-sm-2 control-label">名称</label>
+                      <div class="col-sm-10">
+                        <input type="password"
+                               class="form-control"
+                               id="title"
+                               placeholder="请输入名称...">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="picture"
+                             class="col-sm-2 control-label">图片</label>
+                      <div class="col-sm-10">
+                        <input type="password"
+                               class="form-control"
+                               id="picture"
+                               placeholder="请输入图片url地址...">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="link"
+                             class="col-sm-2 control-label">链接</label>
+                      <div class="col-sm-10">
+                        <input type="password"
+                               class="form-control"
+                               id="link"
+                               placeholder="请输入链接地址..">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit"
+                                class="btn btn-default">添加</button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-                <div class="form-group">
-                  <label for="inputfile">文件输入</label>
-                  <input type="file"
-                         id="inputfile">
-                  <p class="help-block">这里是块级帮助文本的实例。</p>
+
+                <div class="col-md-12">
+                  <h3 style="margin-bottom:16px;">工具列表</h3>
+                  <div class="table-tools">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>名称</th>
+                          <th>Url连接</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Tanmay</td>
+                          <td>Bangalore</td>
+                        </tr>
+                        <tr>
+                          <td>Sachin</td>
+                          <td>Mumbai</td>
+                        </tr>
+                        <tr>
+                          <td>Uma</td>
+                          <td>Pune</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox">请打勾
-                  </label>
-                </div>
-                <button type="submit"
-                        class="btn btn-default">提交</button>
-              </form>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -124,5 +164,10 @@ export default {
 .tools-add {
   padding: 15px 0px;
   margin: 15px 0px;
+}
+
+.table-tools {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
 }
 </style>
