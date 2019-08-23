@@ -1891,7 +1891,7 @@ section#tables p {
 .table>tfoot>tr>th,
 .table>thead>tr>td,
 .table>thead>tr>th {
-    padding: 15px!important;
+    padding: 15px;
 }
 
 .table>thead>tr>th,

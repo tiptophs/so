@@ -13,8 +13,8 @@ import router from './router'
 import axios from 'axios'
 import qs from 'qs'
 //1.2 注册axios
-Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
-Vue.prototype.qs = qs           //全局注册，使用方法为:this.qs
+Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
+Vue.prototype.qs = qs //全局注册，使用方法为:this.qs
 
 //1.1 vue-axios的注册方法
 //import VueAxios from 'vue-axios'
@@ -35,14 +35,15 @@ import './assets/css/style.css'
 
 //引入自定义弹窗提示全局组件
 import Toast from './components/plugins/toast/toast.js'
-Vue.use( Toast);
+Vue.use(Toast);
 
 // highlight.js代码高亮指令
 import Highlight from './components/plugins/highlight/highlight';
 Vue.use(Highlight);
 
+//引入ckeditor组件
 import ckeditor from './components/plugins/ckeditor/index.js'
-Vue.use( ckeditor);
+Vue.use(ckeditor);
 
 //引入markdown组件
 import mavonEditor from 'mavon-editor'
@@ -51,12 +52,19 @@ Vue.use(mavonEditor)
 
 //引入markdown 模板转义为html组件
 import mark from './components/plugins/mark/mark.js'
-Vue.use( mark );
+Vue.use(mark);
+
+//引入element-ui组件
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
 })

@@ -32,12 +32,26 @@
                      for="name">名称</label>
               <input type="text"
                      class="form-control"
-                     id="name"
-                     style="width:100%;"
+                     v-model="tools.title"
+                     style="width:100%;color:#22abb3;"
                      placeholder="请输入工具类型名称">
             </div>
             <button type="submit"
-                    class="btn btn-default">提交</button>
+                    class="btn btn-default"
+                    v-if="isToolAdd"
+                    @click="addTools">提交</button>
+            <button type="submit"
+                    class="btn btn-default"
+                    v-if="!isToolAdd"
+                    @click="editTools">修改</button>
+            <button type="submit"
+                    class="btn btn-default"
+                    v-if="!isToolAdd"
+                    @click="toolsDel">删除</button>
+            <button type="submit"
+                    class="btn btn-default"
+                    v-if="!isToolAdd"
+                    @click="refresh">刷新</button>
           </form>
           <p style="margin-top:5px;">工具项最多可创建15个.</p>
         </div>
@@ -46,105 +60,108 @@
           <div class="row">
             <div class="col-md-4">
               <ul class="list-group">
-                <li class="list-group-item">免费域名注册</li>
-                <li class="list-group-item">免费 Window 空间托管</li>
-                <li class="list-group-item">图像的数量</li>
-                <li class="list-group-item">24*7 支持</li>
-                <li class="list-group-item">每年更新成本</li>
-                <li class="list-group-item">免费域名注册</li>
-                <li class="list-group-item">免费 Window 空间托管</li>
-                <li class="list-group-item">图像的数量</li>
-                <li class="list-group-item">24*7 支持</li>
-                <li class="list-group-item">每年更新成本</li>
-                <li class="list-group-item">免费域名注册</li>
-                <li class="list-group-item">免费 Window 空间托管</li>
-                <li class="list-group-item">图像的数量</li>
-                <li class="list-group-item">24*7 支持</li>
-                <li class="list-group-item">每年更新成本</li>
+                <li class="list-group-item"
+                    v-for="(item, index) in toolList"
+                    :key="index"
+                    :class="{ active: item.sid==selectId }"
+                    @click="toolsViewEdit(item.sid, item.title)">{{item.title}}
+                </li>
               </ul>
             </div>
 
             <div class="col-md-8">
-              <div class="row">
-                <div class="col-md-12">
-                  <form class="form-horizontal">
-                    <div class="form-group">
-                      <label for="tools-type"
-                             class="col-sm-2 control-label">所选工具项</label>
-                      <div class="col-sm-10">
-                        <input type="email"
-                               class="form-control"
-                               id="tools-type"
-                               disabled>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="title"
-                             class="col-sm-2 control-label">名称</label>
-                      <div class="col-sm-10">
-                        <input type="password"
-                               class="form-control"
-                               id="title"
-                               placeholder="请输入名称...">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="picture"
-                             class="col-sm-2 control-label">图片</label>
-                      <div class="col-sm-10">
-                        <input type="password"
-                               class="form-control"
-                               id="picture"
-                               placeholder="请输入图片url地址...">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="link"
-                             class="col-sm-2 control-label">链接</label>
-                      <div class="col-sm-10">
-                        <input type="password"
-                               class="form-control"
-                               id="link"
-                               placeholder="请输入链接地址..">
-                      </div>
-                    </div>
 
-                    <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit"
-                                class="btn btn-default">添加</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <div class="col-md-12">
-                  <h3 style="margin-bottom:16px;">工具列表</h3>
-                  <div class="table-tools">
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>名称</th>
-                          <th>Url连接</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Tanmay</td>
-                          <td>Bangalore</td>
-                        </tr>
-                        <tr>
-                          <td>Sachin</td>
-                          <td>Mumbai</td>
-                        </tr>
-                        <tr>
-                          <td>Uma</td>
-                          <td>Pune</td>
-                        </tr>
-                      </tbody>
-                    </table>
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="title"
+                         class="col-sm-2 control-label">名称</label>
+                  <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control"
+                           id="title"
+                           v-model="itemTool.title"
+                           placeholder="请输入名称...">
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="picture"
+                         class="col-sm-2 control-label">图片</label>
+                  <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control"
+                           id="picture"
+                           v-model="itemTool.img"
+                           placeholder="请输入图片url地址...">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="link"
+                         class="col-sm-2 control-label">链接</label>
+                  <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control"
+                           id="link"
+                           v-model="itemTool.url"
+                           placeholder="请输入链接地址..">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit"
+                            class="btn btn-default"
+                            @click="addItemTool">添加</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="table">
+                <el-table :data="tableData"
+                          border
+                          max-height="350"
+                          show-overflow-tooltip
+                          style="width: 100%">
+                  <!--<el-table-column type="selection"
+                                   width="45">
+                  </el-table-column>-->
+                  <el-table-column label="名称"
+                                   width="260">
+                    <template slot-scope="scope">
+                      <span style="margin-left: 10px">{{ scope.row.title }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="创建时间"
+                                   width="180">
+                    <template slot-scope="scope">
+                      <span style="margin-left: 10px">{{ scope.row.create_time }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="链接地址"
+                                   width="360">
+                    <template slot-scope="scope">
+                      <span style="margin-left: 10px">{{ scope.row.url }}</span>
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column label="操作">
+                    <template slot-scope="scope">
+                      <el-button size="mini"
+                                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                      <el-button size="mini"
+                                 type="danger"
+                                 @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+
+                <el-pagination background
+                               style="margin-top:25px;text-align:right;"
+                               layout="prev, pager, next"
+                               :total="1000">
+                </el-pagination>
               </div>
             </div>
           </div>
@@ -156,7 +173,161 @@
 
 <script>
 export default {
+  data () {
+    return {
+      //添加工具项对象
+      tools: {
+        title: '',
+        sid: ''
+      },
+      //加载列表数组
+      toolList: [],
+      //添加工具对象
+      itemTool: {
+        type: '',
+        title: '',
+        img: '',
+        url: ''
+      },
+      //相关显示状态
+      isToolAdd: true,
+      isActive: false,
+      selectId: -1,
+      //element-table
+      tableData: [],
+      multipleSelection: []
+    }
+  },
+  methods: {
+    addTools () {
+      if (this.tools.title.trim() == '') return false;
+      this.$axios({
+        url: '/api/index/tool/addTools',
+        method: 'post',
+        param: {},
+        data: this.tools,
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          this.toolList.push(res.data.value);
+          this.tools.title = '';
+        } else {
+          alert(res.data.prompt);
+        }
+      }).catch(err => { })
+    },
+    getToolList () {
+      this.$axios({
+        url: '/api/index/tool/getToolList',
+        method: 'post',
+        param: {},
+        data: {}
+      }).then(res => {
+        if (res.data.status) {
+          this.toolList = res.data.value;
+        }
+      }).catch(err => { });
+    },
+    //修改展示
+    toolsViewEdit (id, title) {
+      this.tools.sid = id;
+      this.tools.title = title;
+      this.isToolAdd = false;
+      this.selectId = id;
+      this.itemTool.type = id;
+      this.getToolItem();
+    },
+    //修改工具项
+    editTools () {
+      this.$axios({
+        url: '/api/index/tool/editTool',
+        method: 'post',
+        param: {},
+        data: this.tools,
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          this.toolList.map(tool => {
+            if (tool.sid == this.tools.sid) {
+              tool.title = this.tools.title
+            }
+          })
+        }
+      }).catch(err => { });
+    },
+    //删除工具项
+    toolsDel () {
+      this.$axios({
+        url: '/api/index/tool/delTool',
+        method: 'post',
+        param: {},
+        data: { sid: this.tools.sid },
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          const index = this.toolList.findIndex(tool => tool.sid === this.tools.sid);
+          this.toolList.splice(index, 1);
+          this.refresh();
+        }
+      });
+    },
+    //刷新数据
+    refresh () {
+      this.tools.sid = '';
+      this.tools.title = '';
+      this.isToolAdd = true;
+      this.selectId = -1;
+      this.itemTool.type = '';
+      this.toolList = [];
+    },
+    //添加子选项
+    addItemTool () {
+      this.$axios({
+        url: '/api/index/tool/addItemTool',
+        method: 'post',
+        param: '',
+        data: this.itemTool,
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          alert('数据添加成功!');
+          this.itemTool = {};
+        }
+      });
+    },
+    //获取所有子选项
+    getToolItem () {
+      this.$axios({
+        url: '/api/index/tool/getToolItem',
+        method: 'post',
+        param: {},
+        data: { type: this.tools.sid },
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          this.tableData = res.data.value.tools;
+        }
+      });
+    }
 
+  },
+  created () {
+    this.getToolList();
+    this.getToolItem();
+  },
+  mounted () {
+
+  }
 }
 </script>
 
@@ -169,5 +340,24 @@ export default {
 .table-tools {
   border: 1px solid #dddddd;
   border-radius: 4px;
+}
+
+.tool-item .list-group-item {
+  cursor: pointer;
+}
+
+.box-card {
+  min-height: 480px;
+  margin-bottom: 45px;
+}
+
+.table td,
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  padding: 0px !important;
 }
 </style>
