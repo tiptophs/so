@@ -22,29 +22,37 @@ class Tool extends Th
      */
     public function getTools()
     {
-        $ret = array('status' => true, 'prompt' => '');
-        $tools = array(
-            'resource' => array( //资源下载链接
-                'title' => '工具资源下载',
-                'item' => array(
-                    ['img' => 'http://img.php.cn/upload/article/000/000/003/5b45c06b5c808348.png', 'desc' => 'php开发工具', 'href' => 'http://www.php.cn/xiazai/gongju'],
-                ),
-            ),
-            'toolLink' => array( //工具链接
-                'title' => '在线工具链接',
-                'item' => array(
-                    ['img' => 'http://img.php.cn/upload/tool/000/000/001/58df1702d6551986.png', 'desc' => 'php中文网在线工具箱', 'href' => 'http://www.php.cn/xiazai/tool'],
-                ),
-            ),
-            'website' => array( //收录网站
-                'title' => '网站收录',
-                'item' => array(
-                    ['img' => 'http://www.php.cn/static/images/logo.png', 'desc' => 'php中文网(视频教程)', 'href' => 'http://www.php.cn/'],
-                    ['img' => 'https://7nsts.w3cschool.cn/images/w3c/header-logo.png', 'desc' => 'w3c school ES5-6教程', 'href' => 'cnpm'],
-                ),
-            ),
-        );
-        $ret['result'] = $tools;
+        //设置数据的默认返回值
+        $ret = array('status' => true, 'prompt' => '', 'value' => array());
+
+        //查询当前用户登陆状态,没有用户选择创建者
+        if (Session::has('user')) {
+            $uid = Session::get('user')['uid'];
+        } else {
+            $uid = '8AC4E8DG918B1';
+        }
+
+        //获取所有的工具项
+        $tools = Tools::where('uid', $uid)->all();
+        // 对数据集进行遍历操作
+        foreach ($tools as $key => $tool) {
+            $item = array();
+            //存储工具项名称
+            $item['title'] = $tool['title'];
+            $item['item'] = array();
+
+            $toolItems = ToolItems::where(['type' => $tool['sid'], 'uid' => '8AC4E8DG918B1'])->all();
+            //循环数据
+            foreach ($toolItems as $index => $ti) {
+                $tool_item = array();
+                $tool_item['img'] = $ti['img'];
+                $tool_item['desc'] = $ti['title'];
+                $tool_item['href'] = $ti['url'];
+                array_push($item['item'], $tool_item);
+            }
+
+            array_push($ret['value'], $item);
+        }
         return json($ret);
     }
 
@@ -237,7 +245,7 @@ class Tool extends Th
     public function addItemTool()
     {
         //设置默认数据返回值
-        $ret = array('status' => '', 'prompt' => '', 'value' => '');
+        $ret = array('status' => true, 'prompt' => '', 'value' => '');
 
         //获取数据
         $tool = Request::param();
@@ -282,9 +290,9 @@ class Tool extends Th
         ToolItems::get($type);
 
         $totalNum = 0; //总条目数
-        $perTotalNum = isset($data['perTotalNum']) ? $data['perTotalNum'] : 5; //每页显示多少条
-        $currentPage = isset($data['currentPage']) ? $data['currentPage'] : 1; //当前也码数
-        $currentNum = $currentPage == 1 ? $currentNum = 0 : ($currentPage - 1) * $perTotalNum; //当前起始条目数
+        //$perTotalNum = isset($data['perTotalNum']) ? $data['perTotalNum'] : 5; //每页显示多少条
+        //$currentPage = isset($data['currentPage']) ? $data['currentPage'] : 1; //当前也码数
+        //$currentNum = $currentPage == 1 ? $currentNum = 0 : ($currentPage - 1) * $perTotalNum; //当前起始条目数
 
         // 使用查询构造器查询
         //$totalNum = count(Article::all());
@@ -292,12 +300,41 @@ class Tool extends Th
         $list = ToolItems::where([
             'uid' => Session::get('user')['uid'],
             'type' => $type])
-            ->limit($currentNum, $perTotalNum)
+        //->limit($currentNum, $perTotalNum)
             ->order('create_time', 'desc')
             ->all();
 
         $ret['value'] = array('totalNum' => $totalNum, 'tools' => $list);
 
+        return json($ret);
+    }
+
+    /**
+     * 删除工具
+     *
+     * @return void
+     * @Description
+     * @example
+     * @author user
+     * @since
+     */
+    public function delToolItem()
+    {
+        //设置数据默认返回值
+        $ret = array('status' => true, 'prompt' => '', 'value' => '');
+        $sid = Request::param('sid');
+        if ($sid == '' || $sid == null) {
+            $ret['status'] = false;
+            $ret['prompt'] = '删除的数据不存在...';
+            return json($ret);
+        }
+
+        //删除数据
+        $tool = ToolItems::get($sid);
+        if (!$tool->delete()) {
+            $ret['status'] = false;
+            $ret['prompt'] = '数据删除失败...';
+        }
         return json($ret);
     }
 

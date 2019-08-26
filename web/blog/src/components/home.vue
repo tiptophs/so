@@ -68,7 +68,7 @@
                     }]
                 }).then(res => {
                     if(res.data.status){
-                        this.tools = res.data.result;
+                        this.tools = res.data.value;
                     }
                 }).catch(function(err) {})
            

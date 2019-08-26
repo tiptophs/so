@@ -110,6 +110,7 @@
                   <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit"
                             class="btn btn-default"
+                            v-if="!isToolAdd"
                             @click="addItemTool">添加</button>
                   </div>
                 </div>
@@ -119,7 +120,7 @@
 
             <div class="col-md-12">
               <div class="table">
-                <el-table :data="tableData"
+                <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                           border
                           max-height="350"
                           show-overflow-tooltip
@@ -149,18 +150,20 @@
                   <el-table-column label="操作">
                     <template slot-scope="scope">
                       <el-button size="mini"
-                                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                      <el-button size="mini"
                                  type="danger"
                                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
 
-                <el-pagination background
-                               style="margin-top:25px;text-align:right;"
-                               layout="prev, pager, next"
-                               :total="1000">
+                <el-pagination @size-change="handleSizeChange"
+                               @current-change="handleCurrentChange"
+                               :current-page="currentPage"
+                               :page-sizes="[5, 10, 20, 40]"
+                               :page-size="pagesize"
+                               layout="total, sizes, prev, pager, next, jumper"
+                               :total="tableData.length"
+                               style="margin-top:25px;text-align:right;">
                 </el-pagination>
               </div>
             </div>
@@ -192,9 +195,11 @@ export default {
       //相关显示状态
       isToolAdd: true,
       isActive: false,
+      isitemEdit: false,
       selectId: -1,
-      //element-table
       tableData: [],
+      currentPage: 1, //初始页
+      pagesize: 10,    //    每页的数据
       multipleSelection: []
     }
   },
@@ -284,7 +289,7 @@ export default {
       this.isToolAdd = true;
       this.selectId = -1;
       this.itemTool.type = '';
-      this.toolList = [];
+      this.tableData = [];
     },
     //添加子选项
     addItemTool () {
@@ -299,7 +304,10 @@ export default {
       }).then(res => {
         if (res.data.status) {
           alert('数据添加成功!');
-          this.itemTool = {};
+          this.itemTool.title = '';
+          this.itemTool.url = '';
+          this.itemTool.img = '';
+          this.getToolItem();
         }
       });
     },
@@ -318,8 +326,34 @@ export default {
           this.tableData = res.data.value.tools;
         }
       });
+    },
+    //删除item数据
+    handleDelete (index, data) {
+      this.$axios({
+        url: '/api/index/tool/delToolItem',
+        method: 'post',
+        param: {},
+        data: { sid: data.sid },
+        transformRequest: [data => {
+          return this.qs.stringify(data);
+        }]
+      }).then(res => {
+        if (res.data.status) {
+          const index = this.tableData.findIndex(row => row.sid === data.sid);
+          this.tableData.splice(index, 1);
+          alert('数据删除成功');
+        }
+      });
+    },
+    // 初始页currentPage、初始每页数据数pagesize和数据data
+    handleSizeChange: function (size) {
+      this.pagesize = size;
+      console.log(this.pagesize)  //每页下拉显示数据
+    },
+    handleCurrentChange: function (currentPage) {
+      this.currentPage = currentPage;
+      console.log(this.currentPage)  //点击第几页
     }
-
   },
   created () {
     this.getToolList();
