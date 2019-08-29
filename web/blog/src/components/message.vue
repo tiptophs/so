@@ -57,51 +57,16 @@
                             <h3>最 近 评 论</h3>
                             <div class="comments-grids">
                                 <div class="comments-grid">
-                                    <div class="comments-grid-left">
-                                        <img src="/static/img/banner2.3147d7c.jpg" alt=" " class="img-responsive" />
-                                    </div>
                                     <div class="comments-grid-right">
                                         <h4><a href="#">Michael Crisp</a></h4>
                                         <ul>
-                                            <li>5 June 2017 <i>|</i></li>
-                                            <li><a href="#">Reply</a></li>
+                                            <li>2017-10-15 10:23:35</li>
+                                            <!--<li><a href="#">回复</a></li>-->
                                         </ul>
-                                        <p>Ut ex metus, ornare ac ultricies sit amet, auctor a elit. Praesent sit
-                                            amet scelerisque massa. Duis porta risus id urna finibus aliquet.</p>
+                                        <p>有空常回来看看，不会就开始翻你牌子啦...</p>
                                     </div>
                                     <div class="clearfix"> </div>
                                 </div>
-                                <div class="comments-grid">
-                                    <div class="comments-grid-left">
-                                        <img src="/static/img/banner2.3147d7c.jpg" alt=" " class="img-responsive" />
-                                    </div>
-                                    <div class="comments-grid-right">
-                                        <h4><a href="#">Adam Lii</a></h4>
-                                        <ul>
-                                            <li>8 June 2017 <i>|</i></li>
-                                            <li><a href="#">Reply</a></li>
-                                        </ul>
-                                        <p>Ut ex metus, ornare ac ultricies sit amet, auctor a elit. Praesent sit
-                                            amet scelerisque massa. Duis porta risus id urna finibus aliquet.</p>
-                                    </div>
-                                    <div class="clearfix"> </div>
-                                </div>
-                                <div class="comments-grid">
-                                    <div class="comments-grid-left">
-                                        <img src="/static/img/banner2.3147d7c.jpg" alt=" " class="img-responsive" />
-                                    </div>
-                                    <div class="comments-grid-right">
-                                        <h4><a href="#">Richard Carl</a></h4>
-                                        <ul>
-                                            <li>11 June 2017 <i>|</i></li>
-                                            <li><a href="#">Reply</a></li>
-                                        </ul>
-                                        <p>Ut ex metus, ornare ac ultricies sit amet, auctor a elit. Praesent sit
-                                            amet scelerisque massa. Duis porta risus id urna finibus aliquet.</p>
-                                    </div>
-                                    <div class="clearfix"> </div>
-                                </div>
-
                             </div>
                         </div>
                         <div class="leave-coment-form">
@@ -117,8 +82,8 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 event-right wthree-event-right" >
-                        <div class="event-right1 agileinfo-event-right1" >
+                    <div class="col-md-4 event-right wthree-event-right fix-width" >
+                        <div class="event-right1 agileinfo-event-right1" data-spy="affix" data-offset-top="450" data-offset-bottom="360" >
                             <div class="search1 agileits-search1">
                                 <form action="#" method="post">
                                     <input type="search" name="Search" placeholder="请输入查询内容..." required="">
@@ -226,13 +191,22 @@
                         this.isCk = this.articles.editor==1? true: false;
                     }
                 }).catch(function(err) {})
+            },
+            handleScroll: function () {
+                $('.affix').width($('.fix-width').width());
             }
         },
         components:{
 
         },
         mounted(){
+            //获取文章详情
             this.getPublishArticles(this.$route.query.sid);
+            //添加监听事件
+            window.addEventListener('scroll', this.handleScroll, true);  // 监听（绑定）滚轮滚动事件
+        },
+        destroyed: function () {
+            window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
         }
     }
 </script>
@@ -280,4 +254,17 @@
         word-break: break-all;
     }
 
+    .comments-grid-right{
+        float: none;
+        width:100%;
+    }
+
+    .comments-grids {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .affix {
+        top: 100px;
+    }
 </style>
