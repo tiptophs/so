@@ -112,6 +112,7 @@
 </template>
 
 <script>
+    import { mapMutations } from 'vuex';
     //引入login页面js组件
     import '@/assets/login/js/jquery.vidbacking.js';
 
