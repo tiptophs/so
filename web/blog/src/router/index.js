@@ -4,16 +4,6 @@ import Router from 'vue-router'
 /* Layout */
 import Layout from '@/layout'
 
-// 引入组件
-import blog from '@/components/blog'
-import contact from '@/components/contact'
-import personal from '@/components/personal'
-import particle from '@/components/particle'
-import message from '@/components/message'
-import skill from '@/components/skill'
-import error from '@/components/error'
-import tools from '@/components/tools'
-
 Vue.use(Router)
 
 // 常用固定不变的路由
@@ -32,6 +22,26 @@ const constantRoutes = [
         path: '/home',
         component: () => import('@/views/home/index'),
         name: 'home'
+      },
+      {
+        path: 'skill',
+        name: 'skill',
+        component: () => import('@/views/home/skill')
+      },
+      {
+        path: 'contact',
+        name: 'contact',
+        component: () => import('@/views/home/contact')
+      },
+      {
+        path: 'message',
+        name: 'message',
+        component: () => import('@/views/home/message')
+      },
+      {
+        path: 'blog',
+        name: 'blog',
+        component: () => import('@/views/home/blog')
       }
     ]
   },
@@ -48,45 +58,38 @@ const constantRoutes = [
     ]
   },
   {
-    path: '/blog',
-    name: 'blog',
-    component: blog
-  },
-  {
-    path: '/contact',
-    name: 'contact',
-    component: contact
-  },
-
-  {
     path: '/personal',
-    name: 'personal',
-    component: personal
-  },
-  {
-    path: '/personal/particle',
-    name: 'particle',
-    component: particle
-  },
-  {
-    path: '/message',
-    name: 'message',
-    component: message
-  },
-  {
-    path: '/skill',
-    name: 'skill',
-    component: skill
+    component: Layout,
+    redirect: '/personal/index',
+    children: [
+      {
+        path: '/personal/index',
+        component: () => import('@/views/personal/index'),
+        name: 'personal'
+      },
+      {
+        path: 'particle',
+        name: 'particle',
+        component: () => import('@/views/personal/particle')
+      },
+      {
+        path: 'tools',
+        name: 'tools',
+        component: () => import('@/views/personal/tools')
+      }
+    ]
   },
   {
     path: '/error',
-    name: 'error',
-    component: error
-  },
-  {
-    path: '/personal/tools',
-    name: 'tools',
-    component: tools
+    component: Layout,
+    redirect: '/error',
+    children: [
+      {
+        path: '/error',
+        component: () => import('@/views/redirect/error'),
+        name: 'error'
+      }
+    ]
   }
 ]
 

@@ -84,7 +84,7 @@
                                 <div class="posts-grids w3-posts-grids">
                                     <div class="posts-grid w3-posts-grid">
                                         <div class="posts-grid-left w3-posts-grid-left">
-                                            <a href="single.html"><img src="../assets/images/banner2.jpg" alt=" " class="img-responsive" /></a>
+                                            <a href="single.html"><img src="@/assets/images/banner2.jpg" alt=" " class="img-responsive" /></a>
                                         </div>
                                         <div class="posts-grid-right w3-posts-grid-right">
                                             <h4><a href="single.html">Sed ut perspiciatis unde omnis iste natus</a></h4>
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="posts-grid w3-posts-grid">
                                         <div class="posts-grid-left w3-posts-grid-left">
-                                            <a href="single.html"><img src="../assets/images/banner2.jpg" alt=" " class="img-responsive" /></a>
+                                            <a href="single.html"><img src="@/assets/images/banner2.jpg" alt=" " class="img-responsive" /></a>
                                         </div>
                                         <div class="posts-grid-right w3-posts-grid-right">
                                             <h4><a href="single.html">Neque porro quisquam qui dolorem</a></h4>
@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="posts-grid w3-posts-grid">
                                         <div class="posts-grid-left w3-posts-grid-left">
-                                            <a href="single.html"><img src="../assets/images/banner2.jpg" alt=" " class="img-responsive" /></a>
+                                            <a href="single.html"><img src="@/assets/images/banner2.jpg" alt=" " class="img-responsive" /></a>
                                         </div>
                                         <div class="posts-grid-right w3-posts-grid-right">
                                             <h4><a href="single.html">Nemo enim ipsam voluptatem quia</a></h4>
@@ -152,8 +152,6 @@
 </template>
 
 <script>
-    //引入css样式文件
-    import '../assets/css/blog.css'
     export default {
         name: 'blog',
         data () {
@@ -284,6 +282,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped src="@/assets/css/blog.css"/>
 <style scoped>
     .w3l_header:after {
         width: 280px;

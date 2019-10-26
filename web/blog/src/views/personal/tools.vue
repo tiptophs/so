@@ -1,8 +1,6 @@
 <template>
   <div class="tools">
 
-    <!--顶部图片-->
-    <div class="agile_inner"></div>
     <!--页面导航-->
     <div class="services-breadcrumb">
       <div class="agile_inner_breadcrumb">

@@ -1,7 +1,5 @@
 <template>
   <div class="contact-container">
-    <!--顶部图片-->
-    <div class="agile_inner"></div>
     <!--导航-->
     <div class="services-breadcrumb">
       <div class="agile_inner_breadcrumb">
