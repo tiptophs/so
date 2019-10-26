@@ -10,6 +10,6 @@ return [
     //媒体资源库用于上传markdown文件
     'markdown_file_upload' => Env::get('root_path') . 'public/upload/media',
     //markdown图片访问url地址
-    'http_markdown_image' => 'http://192.168.1.99/so/service/public/upload/media',
+    'http_markdown_image' => '/so/service/public/upload/media',
 
 ];

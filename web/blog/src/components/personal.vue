@@ -22,7 +22,7 @@
             <div class="user-info">
               <h3 class="title">
                 <img class="user-image"
-                     src="/static/img/banner2.3147d7c.jpg" />
+                     src="static/img/banner2.3147d7c.jpg" />
                 <span class="user-name">夏日小呆</span>
                 <p style="margin-top:15px;">阳光总在风雨后,但是风雨中也会有阳光啊...</p>
               </h3>
