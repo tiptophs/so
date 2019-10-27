@@ -44,6 +44,8 @@ import mark from './components/plugins/mark/mark.js'
 // 引入element-ui组件
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
 // 1.2 注册axios
 Vue.prototype.$axios = axios // 全局注册，使用方法为:this.$axios
 Vue.prototype.qs = qs // 全局注册，使用方法为:this.qs
@@ -64,8 +66,7 @@ Vue.use(ElementUI)
 new Vue({
   el: '#app',
   router,
-  // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
-  store,
+  store, // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
   components: {
     App
   },

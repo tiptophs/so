@@ -112,6 +112,7 @@
 </template>
 
 <script>
+    import { login } from '@/api/user.js';
     import { mapMutations } from 'vuex';
     //引入login页面js组件
     import '@/assets/login/js/jquery.vidbacking.js';
@@ -142,24 +143,39 @@
                 //     console.log(result);
                 // })
 
-                let url = '/api/index/login/login';               // 这里就是刚才的config/index.js中的/api
-                this.$axios({
-                    method: "post",
-                    url: url,
-                    data: this.logParam,
-                    transformRequest: [data=> {
-                        return this.qs.stringify(data);
-                    }]
-                }).then(res => {
+                // let url = '/api/index/login/login';               // 这里就是刚才的config/index.js中的/api
+                // this.$axios({
+                //     method: "post",
+                //     url: url,
+                //     data: this.logParam,
+                //     transformRequest: [data=> {
+                //         return this.qs.stringify(data);
+                //     }]
+                // }).then(res => {
+                //     if(res.data.status){
+                //         sessionStorage.setItem('user', this.qs.stringify(res.data.user));
+                //         this.$router.push("/home")
+                //     }else{
+                //         this.logError = res.data.prompt;
+                //     }
+                // }).catch(function(err) {
+                //     alert('登录账户发生未知错误...');
+                // })
+
+
+                //请求数据
+                this.$store.dispatch('user/login', this.logParam).then((res) => {
                     if(res.data.status){
-                        sessionStorage.setItem('user', this.qs.stringify(res.data.user));
+                        //sessionStorage.setItem('user', this.qs.stringify(res.data.user));
                         this.$router.push("/home")
+                        //this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
                     }else{
                         this.logError = res.data.prompt;
                     }
-                }).catch(function(err) {
-                    alert('登录账户发生未知错误...');
+                }).catch(() => {
+                    this.$message.error('账号登陆失败,请稍后重试...');
                 })
+
             },
             register: function(){               //注册
                 let url = '/api/index/login/register';               // 这里就是刚才的config/index.js中的/api

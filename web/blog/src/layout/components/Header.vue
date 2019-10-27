@@ -110,43 +110,43 @@ export default {
   },
   methods: {},
   watch: {
-    $route: {
-      //检测用户是否登陆
-      handler() {
-        this.$axios({
-          method: "post",
-          url: "/api/index/login/isLogin",
-          param: {},
-          data: {},
-          transformRequest: [
-            data => {
-              return this.qs.stringify(data);
-            }
-          ]
-        })
-          .then(res => {
-            //个人中心页面需要验证
-            if (res.data.status) {
-              let _user = res.data.value;
-              this.uName = _user.name;
-              this.showLogin = false;
-              this.showUser = true;
-            } else {
-              if (
-                this.$route.path == "/personal" ||
-                this.$route.path == "/personal/particle"
-              ) {
-                this.$router.push("/error");
-              }
-            }
-          })
-          .catch(err => {
-            this.$router.push("/error");
-          });
-      },
-      // 代表在wacth里声明了handler这个方法之后立即先去执行handler方法
-      immediate: true
-    }
+    // $route: {
+    //   //检测用户是否登陆
+    //   handler() {
+    //     this.$axios({
+    //       method: "post",
+    //       url: "/api/index/login/isLogin",
+    //       param: {},
+    //       data: {},
+    //       transformRequest: [
+    //         data => {
+    //           return this.qs.stringify(data);
+    //         }
+    //       ]
+    //     })
+    //       .then(res => {
+    //         //个人中心页面需要验证
+    //         if (res.data.status) {
+    //           let _user = res.data.value;
+    //           this.uName = _user.name;
+    //           this.showLogin = false;
+    //           this.showUser = true;
+    //         } else {
+    //           if (
+    //             this.$route.path == "/personal" ||
+    //             this.$route.path == "/personal/particle"
+    //           ) {
+    //             this.$router.push("/error");
+    //           }
+    //         }
+    //       })
+    //       .catch(err => {
+    //         this.$router.push("/error");
+    //       });
+    //   },
+    //   // 代表在wacth里声明了handler这个方法之后立即先去执行handler方法
+    //   immediate: true
+    // }
   },
   mounted() {
     //this.isLogin();
