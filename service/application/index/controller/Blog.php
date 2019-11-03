@@ -107,7 +107,7 @@ class Blog extends Th
     public function getArticles()
     {
         //设置返回数组
-        $ret = array('status' => true, 'value' => '', 'prompt' => '');
+        $ret = array('code' => 20000, 'data' => '', 'prompt' => '');
 
         $data = Request::param(); //获取提交的参数
 
@@ -119,12 +119,12 @@ class Blog extends Th
         // 使用查询构造器查询
         $totalNum = count(Article::all());
 
-        $list = Article::where('uid', Session::get('user')['uid'])
+        $list = Article::where('uid', app()->user['uid'])
             ->limit($currentNum, $perTotalNum)
             ->order('create_time', 'desc')
             ->all();
 
-        $ret['value'] = array('totalNum' => $totalNum, 'articles' => $list);
+        $ret['data'] = array('totalNum' => $totalNum, 'articles' => $list);
 
         return json($ret);
     }

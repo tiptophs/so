@@ -7,6 +7,7 @@ use think\facade\Request;
 use think\facade\Validate;
 use app\index\model\User;
 use think\facade\Session;
+use app\common\lib\Auth;
 
 class Login extends Th{
 
@@ -14,6 +15,14 @@ class Login extends Th{
      * 登录操作
      */
     public function login(){
+
+        //设置默认返回值
+        $ret = [
+            'code'=>20000,
+            'prompt'=>'',
+            'data'=>''
+        ];
+
         if(Request::post()){      //判断当前是否为post提交数据
             $data = Request::param();
             $res = User::get(function($query) use ($data){
@@ -21,42 +30,35 @@ class Login extends Th{
                       ->where('password', sha1($data['password']));
             });
             if($res === null){
-                return json(['status'=>false, 'prompt'=>'邮箱或密码不正确，请您检查...']);
+                $ret['code'] = 20001;
+                $ret['prompt'] = '邮箱或密码不正确，请您检查...';
+                return json($ret);
             }else{
-                Session::set('user', array('name'=>$res->name, 'uid'=>$res->uid));
-                return json(['status' => true, 'user'=>['name'=>$res->name, 'uid'=>$res->uid]]);
+                $jwt = app()->auth->token($res->uid);
+                app()->user = app()->auth->user($res->uid);
+                return json(['code' => 20000, 'data'=>['name'=>$res->name, 'uid'=>$res->uid, 'jwt'=>$jwt]]);
             }
         }else{
-            return json(['status'=>false, 'prompt'=>'您的请求是非法的...']);
+            $ret['code'] = 20001;
+            $ret['prompt'] = '您的请求是非法的...';
+            return json($ret);
         }
     }
-
-    /**
-     * 查看用户是否登陆账号
-     * @param return boolean
-     */
-    public function isLogin(){
-        
-        //设置默认返回值
-        $ret = array('status'=>true, 'prompt'=>'', 'value'=>'');
-
-        $user = Session::get('user');
-        if(!is_array($user) || $user['name']=='' || $user['uid']==''){
-            $ret['status'] = false;
-            $ret['prompt'] = '您还没有登录噢。';
-        }else{
-            $ret['value'] = $user;
-        }
-
-        return json($ret);
-    }
-
 
     /**
      * 退出操作
      */
     public function loginOut(){
-        Session::clear();
+        $ret = [
+            'code'=>20000,
+            'prompt'=>'',
+            'data'=>''    
+        ];
+
+        $token = Request::post('token');
+        app()->auth->clear($token);
+
+        return json($ret);
     }
 
 

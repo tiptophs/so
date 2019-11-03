@@ -27,7 +27,7 @@
             <nav class="menu-hover-effect menu-hover-effect-4">
               <ul class="nav navbar-nav">
                 <router-link to="/home" tag="li">
-                  <a href="javascript:;" class="hvr-ripple-in">首页</a>
+                  <a href="javascript:;" class="hvr-ripple-in">soft</a>
                 </router-link>
                 <!--<router-link to="/blog" tag="li">
                                     <a href="javascript:;" class="hvr-ripple-in">日记本</a>
@@ -36,7 +36,7 @@
                   <a href="javascript:;" class="hvr-ripple-in">关于我</a>
                 </router-link>
 
-                <li>
+                <!--<li>
                   <a href="services.html" class="hvr-ripple-in">soft</a>
                 </li>
 
@@ -56,12 +56,13 @@
                 </li>
                 <router-link to="/contact" tag="li">
                   <a href="javascript:;" class="hvr-ripple-in">留言</a>
-                </router-link>
-                <li v-if="showLogin">
+                </router-link>-->
+
+                <li v-if="!isLogin">
                   <router-link to="/login" class="login-button">登录</router-link>
                 </li>
 
-                <li v-if="showUser">
+                <li v-if="isLogin">
                   <a
                     class="login-button"
                     data-toggle="dropdown"
@@ -77,11 +78,7 @@
                     </router-link>
                     <li role="separator" class="divider"></li>
                     <li>
-                      <a href="#">后台登录</a>
-                    </li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                      <a href="#">系统退出</a>
+                      <a href="#" @click.prevent = "logout">系统退出</a>
                     </li>
                   </ul>
                 </li>
@@ -96,60 +93,31 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min";
-import "../../assets/css/style.css";
+import { mapState } from 'vuex';
+
 export default {
   name: "navi",
   data() {
     return {
-      showLogin: true,
-      showUser: false,
-      uName: ""
+      isLogin: false   //登录状态
     };
   },
-  methods: {},
-  watch: {
-    // $route: {
-    //   //检测用户是否登陆
-    //   handler() {
-    //     this.$axios({
-    //       method: "post",
-    //       url: "/api/index/login/isLogin",
-    //       param: {},
-    //       data: {},
-    //       transformRequest: [
-    //         data => {
-    //           return this.qs.stringify(data);
-    //         }
-    //       ]
-    //     })
-    //       .then(res => {
-    //         //个人中心页面需要验证
-    //         if (res.data.status) {
-    //           let _user = res.data.value;
-    //           this.uName = _user.name;
-    //           this.showLogin = false;
-    //           this.showUser = true;
-    //         } else {
-    //           if (
-    //             this.$route.path == "/personal" ||
-    //             this.$route.path == "/personal/particle"
-    //           ) {
-    //             this.$router.push("/error");
-    //           }
-    //         }
-    //       })
-    //       .catch(err => {
-    //         this.$router.push("/error");
-    //       });
-    //   },
-    //   // 代表在wacth里声明了handler这个方法之后立即先去执行handler方法
-    //   immediate: true
-    // }
+  computed:{
+    ...mapState({
+      uName: state => state.user.name
+    })
   },
+  methods: {
+    logout(){   //推出登录
+      this.$store.dispatch('user/logout').then(res=>{
+        this.$router.push({ path: '/login'})
+      })
+    }
+  },
+  watch: {},
   mounted() {
-    //this.isLogin();
+    //验证用户是否登录
+    if (this.uName!='') this.isLogin = true;
   }
 };
 </script>
@@ -168,6 +136,28 @@ export default {
   .navbar-right .dropdown-menu {
     right: auto;
     left: auto;
+  }
+}
+
+.divider{
+  margin:0px;
+}
+
+.dropdown-menu{
+  padding:0px;
+}
+
+.dropdown-menu li a {
+  padding:8px 20px;
+}
+
+@media (max-width: 767px){
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+      color: #333;
+      padding: 7px 0;
+      background: #fff;
+      text-align: center;
+      font-size: 16px;
   }
 }
 </style>

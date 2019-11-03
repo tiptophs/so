@@ -167,6 +167,9 @@
 </template>
 
 <script>
+
+import { getArticles } from '@/api/blog'
+
 export default {
   name: "personal",
   data () {
@@ -186,26 +189,14 @@ export default {
     //获取相应页码数文章
     getArticles: function (cp = 1, ptn = 5) {
       if (cp == '...') return false;
-      let url = '/api/index/blog/getArticles';        // 这里就是刚才的config/index.js中的/api
       this.currentPage = cp;
-      this.$axios({
-        method: "post",
-        url: url,
-        param: {},
-        data: { currentPage: cp, perTotalNum: ptn },
-        transformRequest: [data => {
-          return this.qs.stringify(data);
-        }]
-      }).then(res => {
-        if (res.data.status) {
-          //转换数据格式
-          this.totalNum = res.data.value.totalNum;
-          this.articles = res.data.value.articles;
+      getArticles({ currentPage: cp, perTotalNum: ptn }).then(res=>{
+        //转换数据格式
+          this.totalNum = res.data.totalNum;
+          this.articles = res.data.articles;
           this.pageNum = Math.ceil((this.totalNum) / ptn);
           this.getPageLine(cp, Math.ceil((this.totalNum) / ptn));
-
-        }
-      }).catch(function (err) { })
+      });
     },
     //分页器
     getPageLine: function (dqPage, pageCount) {              //获取当前页码样式列表

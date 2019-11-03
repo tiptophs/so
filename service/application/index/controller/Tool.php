@@ -23,14 +23,10 @@ class Tool extends Th
     public function getTools()
     {
         //设置数据的默认返回值
-        $ret = array('status' => true, 'prompt' => '', 'value' => array());
+        $ret = array('code' => 20000, 'prompt' => '', 'data' => array());
 
         //查询当前用户登陆状态,没有用户选择创建者
-        if (Session::has('user')) {
-            $uid = Session::get('user')['uid'];
-        } else {
-            $uid = '8AC4E8DG918B1';
-        }
+        $uid = app()->user['uid'];
 
         //获取所有的工具项
         $tools = Tools::where('uid', $uid)->all();
@@ -51,7 +47,7 @@ class Tool extends Th
                 array_push($item['item'], $tool_item);
             }
 
-            array_push($ret['value'], $item);
+            array_push($ret['data'], $item);
         }
         return json($ret);
     }
@@ -67,7 +63,7 @@ class Tool extends Th
      */
     public function getSkills()
     {
-        $ret = array('status' => true, 'prompt' => '');
+        $ret = array('code' => 20000, 'prompt' => '', 'data'=>'');
         $tools = array(
             ['title' => 'Git/SVN/集中式、分布式版本控制系统', 'desc' => '版本控制系统，当然最先学习的就是git啦，毋庸置疑的好！', 'sid' => '1'],
             ['title' => 'Php/ThinkPhp/CI/后台服务', 'desc' => 'php语言，php框架都是开发后台服务不可缺少的部分！当然php是世界上最好的语言。滑稽！', 'sid' => '2'],
@@ -77,7 +73,7 @@ class Tool extends Th
             ['title' => 'Mysql/Redis/MongoDb/数据库相关', 'desc' => '数据库优化,非关系型数据库，数据并发，海量数据读取...', 'sid' => '6'],
             ['title' => 'NodeJs/ES6/javascript/Jquery相关', 'desc' => '前端也应该学习下nodejs，有了它后充当后台服务，前端也可以开发完成项目了。', 'sid' => '7'],
         );
-        $ret['result'] = $tools;
+        $ret['data'] = $tools;
         return json($ret);
     }
 

@@ -28,12 +28,9 @@
                                                 <input type="password" placeholder="请输入您的密码..." required="" v-model="logParam.password"/>
                                             </div>
                                             <label class="anim">
-                                                <span>没有账号？<a href="javascript:;" class="register-view" @click="registerUrl">点击注册</a></span>
+                                                <span>没有账号？<a href="javascript:;" class="register-view" @click="isShow">点击注册</a></span>
                                             </label>
                                             <a href="#" class="forgot">忘记密码? 找回...</a>
-                                            <label class="anim-login" style="margin-top:12px;">
-                                                <span style="color:red; ">{{ logError }}</span>
-                                            </label>
                                             <div class="bottom">
                                                 <input type="submit" value="进 入"/>
                                             </div>
@@ -57,7 +54,7 @@
                         </div>
 
 
-                        <div class="videoregister" v-if="showRegister">
+                        <div class="videoregister" v-if="!showLogin">
                             <div class="top-login second">
                                 <div class="border">
                                     <span><i class="fa fa-user-circle" aria-hidden="true"></i></span>
@@ -89,12 +86,9 @@
                                                 <input name="confirm_password" type="password" placeholder="请您确认密码..." required="" v-model="regParam['confirm_password']"/>
                                             </div>
                                             <label class="anim-login">
-                                                <span>咦? 我已有账号！<a href="javascript:;" class="login-view" @click="loginUrl">点击登录</a></span>
+                                                <span>咦? 我已有账号！<a href="javascript:;" class="login-view" @click="isShow">点击登录</a></span>
                                             </label>
 
-                                            <label class="anim-login pull-right">
-                                                <span style="color:red; ">{{ error }}</span>
-                                            </label>
                                             <div class="bottom">
                                                 <input type="submit" value="注 册" />
                                             </div>
@@ -120,59 +114,23 @@
     export default {
         data () {
             return {
-                showRegister: false,            //注册界面初始状态
-                showLogin: true,                //登录界面初始状态
                 regParam:{},                    //注册数据对象
                 logParam:{},                    //登录数据对象
-                error: '',                      //错误提示信息
-                logError: ''                    //登录错误提示信息
+                showLogin:true                  //显示登录页面
             }
         },
+        computed:{                            
+            
+        },
         methods: {
-            registerUrl: function () {          //切换到注册
-                this.showRegister = true;
-                this.showLogin = false;
-            },
-            loginUrl: function(){               //切换到登录
-                this.showRegister = false;
-                this.showLogin = true;
+            isShow: function(){
+                this.showLogin = !this.showLogin;
             },
             login: function(){                  //登录
-
-                // this.$http.jsonp('http://192.168.127.128/so/service/public/index.php/index/login/login').then(function(result){
-                //     console.log(result);
-                // })
-
-                // let url = '/api/index/login/login';               // 这里就是刚才的config/index.js中的/api
-                // this.$axios({
-                //     method: "post",
-                //     url: url,
-                //     data: this.logParam,
-                //     transformRequest: [data=> {
-                //         return this.qs.stringify(data);
-                //     }]
-                // }).then(res => {
-                //     if(res.data.status){
-                //         sessionStorage.setItem('user', this.qs.stringify(res.data.user));
-                //         this.$router.push("/home")
-                //     }else{
-                //         this.logError = res.data.prompt;
-                //     }
-                // }).catch(function(err) {
-                //     alert('登录账户发生未知错误...');
-                // })
-
-
                 //请求数据
                 this.$store.dispatch('user/login', this.logParam).then((res) => {
-                    if(res.data.status){
-                        //sessionStorage.setItem('user', this.qs.stringify(res.data.user));
-                        this.$router.push("/home")
-                        //this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                    }else{
-                        this.logError = res.data.prompt;
-                    }
-                }).catch(() => {
+                    this.$router.push({ path: '/'})
+                }).catch((error) => {
                     this.$message.error('账号登陆失败,请稍后重试...');
                 })
 
@@ -192,8 +150,6 @@
                     if(res.data.status){
                         sessionStorage.setItem('user', this.qs.stringify(res.data.user));
                         this.$router.push("/home")
-                    }else{
-                        this.error = res.data.prompt;
                     }
                 }).catch(function(err) {
                     alert('注册账户出现错误...');
@@ -227,10 +183,6 @@
     .login-view {
         margin: 0px 5px !important;
         color: #0accff !important;
-    }
-
-    .anim-login {
-        color:#cccccc;
     }
 
     .bottom {

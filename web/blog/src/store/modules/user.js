@@ -5,7 +5,9 @@ import router, { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   name: '',
+  state: '',
   avatar: '',
+  id: '',
   introduction: '',
   roles: []
 }
@@ -19,6 +21,9 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_ID: (state, id) => {
+    state.id = id
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -34,11 +39,12 @@ const actions = {
     const { account, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ account: account.trim(), password: password }).then(response => {
-        console.log(response)
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+        commit('SET_TOKEN', data.jwt)
+        commit('SET_NAME', data.name)
+        commit('SET_ID', data.uid)
+        setToken(data.jwt)
+        resolve(response)
       }).catch(error => {
         reject(error)
       })
@@ -79,14 +85,13 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_NAME', '')
+        commit('SET_ID', '')
+        commit('SET_AVATAR', '')
+        commit('SET_INTRODUCTION', '')
         removeToken()
-        resetRouter()
-
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
-
-        resolve()
+        // resetRouter()
+        resolve(true)
       }).catch(error => {
         reject(error)
       })

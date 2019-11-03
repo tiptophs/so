@@ -129,6 +129,7 @@
 
 <script>
 
+import { getSkills } from '@/api/home'
 
 export default {
   data () {
@@ -139,20 +140,9 @@ export default {
   methods: {
     //获取我的相关技能，并且展示
     gitskills: function () {
-      let url = '/api/index/tool/getSkills';        // 这里就是刚才的config/index.js中的/api
-      this.$axios({
-        method: "post",
-        url: url,
-        param: {},
-        data: {},
-        transformRequest: [data => {
-          return this.qs.stringify(data);
-        }]
-      }).then(res => {
-        if (res.data.status) {
-          this.skills = res.data.result;
-        }
-      }).catch(function (err) { })
+      getSkills().then(res=>{
+        this.skills = res.data;
+      })
     }
   },
   mounted () {

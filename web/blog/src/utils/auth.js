@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 // 设置存储key值
-const TokenKey = 'Admin-Token'
+const TokenKey = 'Blog-Token'
 
 // 获取token
 export function getToken () {

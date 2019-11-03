@@ -45,6 +45,9 @@
 </template>
 
 <script>
+
+    import { getTools } from '@/api/home.js';
+
     export default {
         name: 'Home',
         data(){
@@ -54,26 +57,12 @@
         },
         methods:{
             getTools:function(){
-                let url = '/api/index/tool/getTools';        // 这里就是刚才的config/index.js中的/api
-                this.$axios({
-                    method: "post",
-                    url: url,
-                    param:{},
-                    data: {},
-                    transformRequest: [data=> {
-                        return this.qs.stringify(data);
-                    }]
-                }).then(res => {
-                    if(res.data.status){
-                        this.tools = res.data.value;
-                    }
-                }).catch(function(err) {})
-           
+                getTools().then(res=>{
+                    this.tools = res.data;
+                });
             }
         },
-        components:{
-
-        },
+        components:{},
         mounted(){
             this.getTools();
         }
